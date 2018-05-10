@@ -18,15 +18,15 @@ public class Rol {
 
 	@Column(name = "nombre_rol")
 	private String nombre;
-	
+
 	// CONSTRUCTORES
-	
+
 	public Rol() {
 
 	}
 
 	// GETTERS & SETTERS
-	
+
 	public long getId() {
 		return id;
 	}

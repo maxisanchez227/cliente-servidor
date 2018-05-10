@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head>
+	<title>Nuevo Usuario</title>
+</h:head> 
+<body>
+
+	<p:breadCrumb>
+		<p:menuitem value="Home" url="home.xhtml" />
+		<p:menuitem value="Usuarios" url="usuarios.xhtml" />
+		<p:menuitem value="Nuevo" url="nuevoUsuario.xhtml" />
+	</p:breadCrumb>
+	
+	<br/>
+
+	<h:form>
+		<p:fieldset legend="Nuevo Usuario">
+			<h:panelGrid columns="2">
+				<p:outputLabel for="nombre" value="Nombre"/>
+				<p:inputText id="nombre" value="#{usuarioBean.usuario.nombre}" />
+				<p:outputLabel for="apellido" value="Apellido"/>
+				<p:inputText id="apellido" value="#{usuarioBean.usuario.apellido}" />
+				<p:outputLabel for="dni" value="DNI"/>
+				<p:inputText id="dni" value="#{usuarioBean.usuario.dni}" />
+				<p:outputLabel for="fechaNac" value="Fecha Nac."/>
+				<p:calendar id="fechaNac" value="#{usuarioBean.usuario.fechaNac}" pattern="dd/mm/yyyy" />
+				<p:outputLabel for="direccion" value="Dirección"/>
+				<p:inputText id="direccion" value="#{usuarioBean.usuario.direccion}" />
+				<p:outputLabel for="email" value="E-Mail"/>
+				<p:inputText id="email" value="#{usuarioBean.usuario.email}" />
+				<p:outputLabel for="username" value="Nombre Usuario"/>
+				<p:inputText id="username" value="#{usuarioBean.usuario.username}" />
+				<p:outputLabel for="password" value="Contraseña"/>
+				<p:inputText id="password" value="#{usuarioBean.usuario.password}" />
+				<p:outputLabel for="rol" value="Rol"/>
+				<p:selectOneMenu id="rol" value="#{usuarioBean.rolId}">
+					<f:selectItem itemLabel="- Seleccione -" />
+					<f:selectItems value="#{usuarioBean.getRoles()}" var="r" itemValue="#{r.id}" itemLabel="#{r.nombre}" />
+				</p:selectOneMenu>				
+				<p:commandButton icon="ui-icon-check" actionListener="#{usuarioBean.createUsuario()}" value="Guardar" action="usuarios.xhtml?faces-redirect=true"/>
+				<p:commandButton icon="ui-icon-close" value="Cancelar" action="usuarios.xhtml?faces-redirect=true"/>
+			</h:panelGrid>
+		</p:fieldset>
+	</h:form>
+
+</body> 
+</html>

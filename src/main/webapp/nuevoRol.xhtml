@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Nuevo Rol</title>
+</h:head>
+<body>
+
+	<h:form>
+		<p:fieldset legend="Nuevo Rol">
+			<h:panelGrid columns="2">
+				<p:outputLabel for="nombre" value="Nombre Rol"/>
+				<p:inputText id="nombre" value="#{rolBean.rol.nombre}"/>
+				<p:commandButton icon="ui-icon-check" actionListener="#{rolBean.createRol()}" value="Guardar" action="roles.xhtml?faces-redirect=true"/>
+				<p:commandButton icon="ui-icon-close" value="Cancelar" action="roles.xhtml?faces-redirect=true"/>
+			</h:panelGrid>
+		</p:fieldset>
+	</h:form>
+
+</body>
+</html>

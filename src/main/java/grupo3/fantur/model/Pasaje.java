@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "PASAJE")
@@ -17,27 +18,33 @@ public class Pasaje {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_pasaje")
+	@Column(name = "id_pasaje", nullable = false)
 	private long id;
 
-	@Column(name = "origen")
+	@NotNull
+	@Column(name = "origen", nullable = false)
 	private String origen;
 
-	@Column(name = "destino")
+	@NotNull
+	@Column(name = "destino", nullable = false)
 	private String destino;
 
+	@NotNull
 	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_partida")
+	@Column(name = "fecha_partida", nullable = false)
 	private Date fechaPartida;
 
+	@NotNull
 	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_regreso")
+	@Column(name = "fecha_regreso", nullable = false)
 	private Date fechaRegreso;
 
-	@Column(name = "precio_pasaje")
+	@NotNull
+	@Column(name = "precio_pasaje", nullable = false)
 	private float precioPasaje;
 
-	@Column(name = "medio_transporte")
+	@NotNull
+	@Column(name = "medio_transporte", nullable = false)
 	private String medioTransporte;
 
 	// CONSTRUCTORES

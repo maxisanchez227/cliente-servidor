@@ -12,6 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "RESERVA")
@@ -19,22 +20,26 @@ public class Reserva {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_reserva")
+	@Column(name = "id_reserva", nullable = false)
 	private long id;
 
+	@NotNull
 	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_reserva")
+	@Column(name = "fecha_reserva", nullable = false)
 	private Date fechaReserva;
 
-	@Column(name = "estado")
+	@NotNull
+	@Column(name = "estado", nullable = false)
 	private String estado;
 
+	@NotNull
 	@OneToOne
-	@JoinColumn(name = "id_usuario")
+	@JoinColumn(name = "id_usuario", nullable = false)
 	private Usuario usuario;
 
+	@NotNull
 	@OneToOne
-	@JoinColumn(name = "id_paquete")
+	@JoinColumn(name = "id_paquete", nullable = false)
 	private Paquete paquete;
 
 	// CONSTRUCTORES

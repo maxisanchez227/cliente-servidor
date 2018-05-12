@@ -10,13 +10,21 @@
 </h:head>
 <body>
 
+	<p:breadCrumb>
+		<p:menuitem value="Home" url="home.xhtml" />
+		<p:menuitem value="Roles" url="roles.xhtml" />
+		<p:menuitem value="Nuevo" url="nuevoRol.xhtml" />
+	</p:breadCrumb>
+	
+	<br/>
+
 	<h:form>
 		<p:fieldset legend="Nuevo Rol">
 			<h:panelGrid columns="2">
 				<p:outputLabel for="nombre" value="Nombre Rol"/>
 				<p:inputText id="nombre" value="#{rolBean.rol.nombre}"/>
 				<p:commandButton icon="ui-icon-check" actionListener="#{rolBean.createRol()}" value="Guardar" action="roles.xhtml?faces-redirect=true"/>
-				<p:commandButton icon="ui-icon-close" value="Cancelar" action="roles.xhtml?faces-redirect=true"/>
+				<p:button icon="ui-icon-close" value="Cancelar" outcome="roles.xhtml?faces-redirect=true"/>
 			</h:panelGrid>
 		</p:fieldset>
 	</h:form>

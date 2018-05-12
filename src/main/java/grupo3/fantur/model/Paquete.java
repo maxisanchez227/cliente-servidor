@@ -8,6 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "PAQUETE")
@@ -15,31 +19,41 @@ public class Paquete {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_paquete")
+	@Column(name = "id_paquete", nullable = false)
 	private long id;
 
-	@Column(name = "descripcion")
+	@NotNull
+	@Size(min = 1, max = 200)
+	@Pattern(regexp = "[a-z \\s A-Z 0-9 ñ Ñ]{1,200}", message = "La descripción no puede contener caracteres no válidos")
+	@Column(name = "descripcion", nullable = false)
 	private String descripcion;
 
-	@Column(name = "cant_personas")
+	@NotNull
+	@Min(1)
+	@Column(name = "cant_personas", nullable = false)
 	private int cantidadPersonas;
 
-	@Column(name = "precio")
+	@NotNull
+	@Column(name = "precio", nullable = false)
 	private float precio;
 
-	@Column(name = "cant_disponible")
+	@NotNull
+	@Column(name = "cant_disponible", nullable = false)
 	private int cantidadDisponible;
 
+	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "id_pasaje")
+	@JoinColumn(name = "id_pasaje", nullable = false)
 	private Pasaje pasaje;
 
+	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "id_hotel")
+	@JoinColumn(name = "id_hotel", nullable = false)
 	private Hotel hotel;
 
+	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "id_actividad")
+	@JoinColumn(name = "id_actividad", nullable = false)
 	private Actividad actividad;
 
 	// CONSTRUCTORES

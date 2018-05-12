@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "ACTIVIDAD")
@@ -20,14 +21,17 @@ public class Actividad {
 	@Column(name = "id_actividad")
 	private long id;
 
+	@NotNull
 	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_actividad")
+	@Column(name = "fecha_actividad", nullable = false)
 	private Date fechaActividad;
 
-	@Column(name = "precio_x_persona")
+	@NotNull
+	@Column(name = "precio_x_persona", nullable = false)
 	private float precioPorPersona;
 
-	@Column(name = "descripcion")
+	@NotNull
+	@Column(name = "descripcion", nullable = false)
 	private String descripcion;
 
 	// CONSTRUCTORES

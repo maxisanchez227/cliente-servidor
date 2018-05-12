@@ -12,6 +12,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "USUARIO")
@@ -22,36 +28,54 @@ public class Usuario {
 	@Column(name = "id_usuario")
 	private long id;
 
-	@Column(name = "nombre")
+	@NotNull
+	@Size(min = 1, max = 50)
+	@Pattern(regexp = "[a-z \\s A-Z ñ Ñ]{1,50}", message = "El nombre no puede contener caracteres no válidos")
+	@Column(name = "nombre", nullable = false)
 	private String nombre;
 
-	@Column(name = "apellido")
+	@NotNull
+	@Size(min = 1, max = 50)
+	@Pattern(regexp = "[a-z \\s A-Z ñ Ñ]{1,50}", message = "El nombre no puede contener caracteres no válidos")
+	@Column(name = "apellido", nullable = false)
 	private String apellido;
 
-	@Column(name = "dni")
+	@NotNull
+	@Min(1)
+	@Max(99999999L)
+	@Column(name = "dni", nullable = false)
 	private long dni;
 
+	@NotNull
 	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_nac")
+	@Past(message = "La fecha de nacimeinto debe ser menor a la fecha actual")
+	@Column(name = "fecha_nac", nullable = false)
 	private Date fechaNac;
 
-	@Column(name = "direccion")
+	@NotNull
+	@Size(min = 1, max = 100)
+	@Pattern(regexp = "[a-z \\s A-Z 0-9 ñ Ñ]{1,100}", message = "La dirección no puede contener caracteres no válidos")
+	@Column(name = "direccion", nullable = false)
 	private String direccion;
 
-	@Column(name = "email")
+	@NotNull
+	@Column(name = "email", nullable = false)
 	private String email;
 
-	@Column(name = "username")
+	@NotNull
+	@Column(name = "username", nullable = false)
 	private String username;
 
-	@Column(name = "password")
+	@NotNull
+	@Column(name = "password", nullable = false)
 	private String password;
 
+	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "id_rol")
+	@JoinColumn(name = "id_rol", nullable = false)
 	private Rol rol;
 
-	// CONSTRUTORES
+	// CONSTRUCTORES
 
 	public Usuario() {
 

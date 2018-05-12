@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "HOTEL")
@@ -13,16 +16,23 @@ public class Hotel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_hotel")
+	@Column(name = "id_hotel", nullable = false)
 	private long id;
 
-	@Column(name = "nombre")
+	@NotNull
+	@Size(min = 1, max = 50)
+	@Pattern(regexp = "[a-z \\s A-Z 0-9 ñ Ñ]{1,50}", message = "El nombre no puede contener caracteres no válidos")
+	@Column(name = "nombre", nullable = false)
 	private String nombre;
 
-	@Column(name = "lugar")
+	@NotNull
+	@Size(min = 1, max = 100)
+	@Pattern(regexp = "[a-z \\s A-Z 0-9 ñ Ñ]{1,50}", message = "La dirección no puede contener caracteres no válidos")
+	@Column(name = "lugar", nullable = false)
 	private String lugar;
 
-	@Column(name = "precio_x_persona")
+	@NotNull
+	@Column(name = "precio_x_persona", nullable = false)
 	private float precioPorPersona;
 
 	// CONSTRUCTORES

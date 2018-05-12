@@ -43,7 +43,7 @@
 					<f:selectItems value="#{usuarioBean.getRoles()}" var="r" itemValue="#{r.id}" itemLabel="#{r.nombre}" />
 				</p:selectOneMenu>				
 				<p:commandButton icon="ui-icon-check" actionListener="#{usuarioBean.createUsuario()}" value="Guardar" action="usuarios.xhtml?faces-redirect=true"/>
-				<p:commandButton icon="ui-icon-close" value="Cancelar" action="usuarios.xhtml?faces-redirect=true"/>
+				<p:button icon="ui-icon-close" value="Cancelar" outcome="usuarios.xhtml?faces-redirect=true"/>
 			</h:panelGrid>
 		</p:fieldset>
 	</h:form>

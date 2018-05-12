@@ -12,6 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "PAGO")
@@ -19,26 +20,30 @@ public class Pago {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_pago")
+	@Column(name = "id_pago", nullable = false)
 	private long id;
 
+	@NotNull
 	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_pago")
+	@Column(name = "fecha_pago", nullable = false)
 	private Date fechaPago;
 
-	@Column(name = "importe")
+	@NotNull
+	@Column(name = "importe", nullable = false)
 	private double importe;
 
+	@NotNull
 	@OneToOne
-	@JoinColumn(name = "id_reserva")
+	@JoinColumn(name = "id_reserva", nullable = false)
 	private Reserva reserva;
 
+	@NotNull
 	@OneToOne
-	@JoinColumn(name = "medio_de_pago")
+	@JoinColumn(name = "medio_de_pago", nullable = false)
 	private MedioDePago medioDePago;
 
 	// CONSTRUCTORES
-	
+
 	public Pago() {
 
 	}

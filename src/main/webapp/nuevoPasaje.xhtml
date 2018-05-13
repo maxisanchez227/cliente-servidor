@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Nuevo Pasaje</title>
+</h:head>
+<body>
+
+	<p:breadCrumb>
+		<p:menuitem value="Home" url="home.xhtml" />
+		<p:menuitem value="Pasajes" url="pasajes.xhtml" />
+		<p:menuitem value="Nuevo" url="nuevoPasaje.xhtml" />
+	</p:breadCrumb>
+	
+	<br/>
+
+	<h:form>
+		<p:fieldset legend="Nuevo Pasaje">
+			<h:panelGrid columns="2">
+				<p:outputLabel for="origen" value="Origen"/>
+				<p:inputText id="origen" value="#{pasajeBean.pasaje.origen}"/>
+				
+				<p:outputLabel for="destino" value="Destino"/>
+				<p:inputText id="destino" value="#{pasajeBean.pasaje.destino}"/>
+				
+				<p:outputLabel for="fecPartida" value="Fec. Partida"/>
+				<p:calendar id="fecPartida" value="#{pasajeBean.pasaje.fechaPartida}"/>
+				
+				<p:outputLabel for="fecRegreso" value="Fec. Regreso"/>
+				<p:calendar id="fecRegreso" value="#{pasajeBean.pasaje.fechaRegreso}"/>
+				
+				<p:outputLabel for="precio" value="Precio"/>
+				<p:inputText id="precio" value="#{pasajeBean.pasaje.precioPasaje}"/>
+				
+				<p:outputLabel for="transporte" value="Transporte"/>
+				<p:inputText id="transporte" value="#{pasajeBean.pasaje.medioTransporte}"/>
+				
+				<p:commandButton icon="ui-icon-check" actionListener="#{pasajeBean.createPasaje()}" value="Guardar" action="pasajes.xhtml?faces-redirect=true"/>
+				<p:button icon="ui-icon-close" value="Cancelar" outcome="pasajes.xhtml?faces-redirect=true"/>
+			</h:panelGrid>
+		</p:fieldset>
+	</h:form>
+
+</body>
+</html>

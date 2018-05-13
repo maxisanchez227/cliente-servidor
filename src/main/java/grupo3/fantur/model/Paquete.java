@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -23,13 +22,16 @@ public class Paquete {
 	private long id;
 
 	@NotNull
-	@Size(min = 1, max = 200)
-	@Pattern(regexp = "[a-z \\s A-Z 0-9 ñ Ñ]{1,200}", message = "La descripción no puede contener caracteres no válidos")
+	@Size(min = 1, max = 50)
+	@Pattern(regexp = "[a-z \\s A-Z 0-9 ñ Ñ]{1,50}", message = "El nombre no puede contener caracteres no válidos")
+	@Column(name = "nombre", nullable = false)
+	private String nombre;
+
+	@NotNull
 	@Column(name = "descripcion", nullable = false)
 	private String descripcion;
 
 	@NotNull
-	@Min(1)
 	@Column(name = "cant_personas", nullable = false)
 	private int cantidadPersonas;
 
@@ -70,6 +72,14 @@ public class Paquete {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	public String getDescripcion() {

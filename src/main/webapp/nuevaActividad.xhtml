@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Nueva Actividad</title>
+</h:head>
+<body>
+
+	<p:breadCrumb>
+		<p:menuitem value="Home" url="home.xhtml" />
+		<p:menuitem value="Actividades" url="actividades.xhtml" />
+		<p:menuitem value="Nuevo" url="nuevaActividad.xhtml" />
+	</p:breadCrumb>
+	
+	<br/>
+
+	<h:form>
+		<p:fieldset legend="Nueva Actividad">
+			<h:panelGrid columns="2">
+				<p:outputLabel for="nombre" value="Nombre"/>
+				<p:inputText id="nombre" value="#{actividadBean.actividad.nombre}"/>
+				
+				<p:outputLabel for="fecha" value="Fecha"/>
+				<p:calendar id="fecha" value="#{actividadBean.actividad.fechaActividad}"/>
+				
+				<p:outputLabel for="precio" value="Precio x Persona"/>
+				<p:inputText id="precio" value="#{actividadBean.actividad.precioPorPersona}"/>
+				
+				<p:outputLabel for="descripcion" value="Descripción"/>
+				<p:inputText id="descripcion" value="#{actividadBean.actividad.descripcion}"/>
+
+				<p:commandButton icon="ui-icon-check" actionListener="#{actividadBean.createActividad()}" value="Guardar" action="actividades.xhtml?faces-redirect=true"/>
+				<p:button icon="ui-icon-close" value="Cancelar" outcome="actividades.xhtml?faces-redirect=true"/>
+			</h:panelGrid>
+		</p:fieldset>
+	</h:form>
+
+</body>
+</html>

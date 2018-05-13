@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Listado Actividades</title>
+	<style>
+		.ui-datatable .ui-datatable-header, .ui-datatable .ui-datatable-footer {
+    		text-align: right;
+    		padding: 4px 10px;
+		}
+	</style>
+</h:head>
+<body>
+
+	<p:breadCrumb>
+		<p:menuitem value="Home" url="home.xhtml" />
+		<p:menuitem value="Actividades" url="actividades.xhtml" />
+	</p:breadCrumb>
+	
+	<br/>
+	
+	<!-- lista actividades -->
+	<h:form id="frmActividades">
+		<p:dataTable id="actividades" value="#{actividadBean.listaActividades()}" var="a" stickyHeader="true" >
+		
+			<f:facet name="header">
+				<p:button value="Nuevo" outcome="nuevaActividad.xhtml" icon="ui-icon-plus" />
+				<span />
+				<p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" />
+				<p:columnToggler datasource="actividades" trigger="toggler" />
+			</f:facet>
+			
+			<p:column headerText="Id" width="20">
+				<h:outputText value="#{a.id}"/>
+			</p:column>
+			
+			<p:column headerText="Nombre" width="200">
+				<h:outputText value="#{a.nombre}" />
+			</p:column>
+			
+			<p:column headerText="Fecha" width="90">
+				<h:outputText value="#{a.fechaActividad}" />
+			</p:column>
+			
+			<p:column headerText="Precio x Persona" width="140">
+				<h:outputText value="#{a.precioPorPersona}">
+					<f:convertNumber type="currency" currencySymbol="$"/>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="Descripción">
+				<h:outputText value="#{a.descripcion}" />
+			</p:column>
+			
+			<p:column headerText=" " width="20" toggleable="false">
+				<p:commandLink title="Editar" actionListener="#{actividadBean.leer(a)}" oncomplete="PF('widgetdialog').show();" update="dialog">
+					<h:graphicImage library="images" name="edit.ico" height="20" width="20"/>
+				</p:commandLink>
+			</p:column>
+			
+			<p:column headerText=" " width="20" toggleable="false">
+				<p:commandLink title="Eliminar" actionListener="#{actividadBean.deleteActividad(a)}" update="frmActividades">
+					<h:graphicImage library="images" name="delete.png" height="20" width="20"/>
+					<p:confirm header="Eliminar Actividad" message="¿Está seguro?" icon="ui-icon-alert"/>
+				</p:commandLink>
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+					<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>					
+				</p:confirmDialog>
+			</p:column>
+			
+		</p:dataTable>
+	</h:form>
+	
+	<!-- widget editar actividad -->
+	<p:dialog id="dialog" widgetVar="widgetdialog" header="Editar Actividad" modal="true" resizable="false" closeOnEscape="true" draggable="false">
+		<h:form id="frmDialog">
+			<h:panelGrid columns="2">
+				<p:outputLabel for="nombre" value="Nombre"/>
+				<p:inputText id="nombre" value="#{actividadBean.actividad.nombre}"/>
+				<p:outputLabel for="fecha" value="Fecha"/>
+				<p:calendar id="fecha" value="#{actividadBean.actividad.fechaActividad}"/>
+				<p:outputLabel for="precio" value="Precio x Persona"/>
+				<p:inputText id="precio" value="#{actividadBean.actividad.precioPorPersona}"/>
+				<p:outputLabel for="descripcion" value="Descripción"/>
+				<p:inputText id="descripcion" value="#{actividadBean.actividad.descripcion}"/>
+				<p:commandButton value="Modificar" icon="ui-icon-check" action="#{actividadBean.updateActividad}" onclick="PF('widgetdialog').hide();" update="frmActividades"/>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+</body>
+</html>

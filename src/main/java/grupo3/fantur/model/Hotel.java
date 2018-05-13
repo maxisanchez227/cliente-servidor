@@ -28,8 +28,8 @@ public class Hotel {
 	@NotNull
 	@Size(min = 1, max = 100)
 	@Pattern(regexp = "[a-z \\s A-Z 0-9 ñ Ñ]{1,50}", message = "La dirección no puede contener caracteres no válidos")
-	@Column(name = "lugar", nullable = false)
-	private String lugar;
+	@Column(name = "direccion", nullable = false)
+	private String direccion;
 
 	@NotNull
 	@Column(name = "precio_x_persona", nullable = false)
@@ -59,12 +59,12 @@ public class Hotel {
 		this.nombre = nombre;
 	}
 
-	public String getLugar() {
-		return lugar;
+	public String getDireccion() {
+		return direccion;
 	}
 
-	public void setLugar(String lugar) {
-		this.lugar = lugar;
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 
 	public float getPrecioPorPersona() {

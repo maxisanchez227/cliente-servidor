@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Nuevo Hotel</title>
+</h:head>
+<body>
+
+	<p:breadCrumb>
+		<p:menuitem value="Home" url="home.xhtml" />
+		<p:menuitem value="Hoteles" url="hoteles.xhtml" />
+		<p:menuitem value="Nuevo" url="nuevoHotel.xhtml" />
+	</p:breadCrumb>
+	
+	<br/>
+
+	<h:form>
+		<p:fieldset legend="Nuevo Hotel">
+			<h:panelGrid columns="2">
+				<p:outputLabel for="nombre" value="Nombre Hotel"/>
+				<p:inputText id="nombre" value="#{hotelBean.hotel.nombre}"/>
+				
+				<p:outputLabel for="direccion" value="Dirección"/>
+				<p:inputText id="direccion" value="#{hotelBean.hotel.direccion}"/>
+				
+				<p:outputLabel for="precio" value="Precio x Persona"/>
+				<p:inputText id="precio" value="#{hotelBean.hotel.precioPorPersona}"/>
+				
+				<p:commandButton icon="ui-icon-check" actionListener="#{hotelBean.createHotel()}" value="Guardar" action="hoteles.xhtml?faces-redirect=true"/>
+				<p:button icon="ui-icon-close" value="Cancelar" outcome="hoteles.xhtml?faces-redirect=true"/>
+			</h:panelGrid>
+		</p:fieldset>
+	</h:form>
+
+</body>
+</html>

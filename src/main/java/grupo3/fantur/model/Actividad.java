@@ -22,6 +22,10 @@ public class Actividad {
 	private long id;
 
 	@NotNull
+	@Column(name = "nombre_actividad", nullable = false)
+	private String nombre;
+
+	@NotNull
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_actividad", nullable = false)
 	private Date fechaActividad;
@@ -48,6 +52,14 @@ public class Actividad {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	public Date getFechaActividad() {

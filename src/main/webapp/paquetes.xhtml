@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Listado Paquetes</title>
+	<style>
+		.ui-datatable .ui-datatable-header, .ui-datatable .ui-datatable-footer {
+    		text-align: right;
+    		padding: 4px 10px;
+		}
+	</style>
+</h:head>
+<body>
+	
+	<p:breadCrumb>
+		<p:menuitem value="Home" url="home.xhtml" />
+		<p:menuitem value="Paquetes" url="paquetes.xhtml" />
+	</p:breadCrumb>
+	
+	<br/>
+	
+	<!-- lista paquetes -->
+	<h:form id="frmPaquetes">
+		<p:dataTable id="paquetes" value="#{paqueteBean.listaPaquetes()}" var="p" stickyHeader="true" >
+		
+			<f:facet name="header">
+				<p:button value="Nuevo" outcome="nuevoPaquete.xhtml" icon="ui-icon-plus" />
+				<span />
+				<p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" />
+				<p:columnToggler datasource="paquetes" trigger="toggler" />
+			</f:facet>
+			
+			<p:column headerText="Id" width="20">
+				<h:outputText value="#{p.id}" />
+			</p:column>
+			
+			<p:column headerText="Nombre" width="200">
+				<h:outputText value="#{p.nombre}"/>
+			</p:column>
+			
+			<p:column headerText="Descripción">
+				<h:outputText value="#{p.descripcion}"/>
+			</p:column>
+			
+			<p:column headerText="Cant. Pers." width="100">
+				<h:outputText value="#{p.cantidadPersonas}"/>
+			</p:column>
+
+			<p:column headerText="Precio" width="140">
+				<h:outputText value="#{p.precio}">
+					<f:convertNumber type="currency" currencySymbol="$" />
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="Disp." width="60">
+				<h:outputText value="#{p.cantidadDisponible}"/>
+			</p:column>
+			
+			
+			<p:column headerText="Id_P" width="35">
+				<h:outputText value="#{p.pasaje.id}" />
+			</p:column>
+			
+			<p:column headerText="Id_H" width="35">
+				<h:outputText value="#{p.hotel.id}" />
+			</p:column>
+			
+			<p:column headerText="Id_A" width="35">
+				<h:outputText value="#{p.actividad.id}" />
+			</p:column>
+			
+			<p:column headerText=" " width="20" toggleable="false">
+				<p:commandLink title="Detalles" actionListener="#{paqueteBean.leer(p)}" oncomplete="PF('widgetdetail').show();" update="detaildialog">
+					<h:graphicImage library="images" name="detail.png" height="20" width="20"/>
+				</p:commandLink>
+			</p:column>
+			
+			<p:column headerText=" " width="20" toggleable="false">
+				<p:commandLink title="Editar" actionListener="#{paqueteBean.leer(p)}" oncomplete="PF('widgetdialog').show();" update="dialog">
+					<h:graphicImage library="images" name="edit.ico" height="20" width="20"/>
+				</p:commandLink>
+			</p:column>
+			
+			<p:column headerText=" " width="20" toggleable="false">
+				<p:commandLink title="Eliminar" actionListener="#{paqueteBean.deletePaquete(p)}" update="frmPaquetes">
+					<h:graphicImage library="images" name="delete.png" height="20" width="20"/>
+					<p:confirm header="Eliminar Usuario" message="¿Está seguro?" icon="ui-icon-alert"/>
+				</p:commandLink>
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+					<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>					
+				</p:confirmDialog>
+			</p:column>
+			
+		</p:dataTable>
+	</h:form>
+	
+	<!-- widget detalle paquete -->
+	<p:dialog id="detaildialog" widgetVar="widgetdetail" header="Detalle Paquete '#{paqueteBean.paquete.nombre}'" modal="true" resizable="false" closeOnEscape="true" draggable="false">
+		<p>#{paqueteBean.paquete.descripcion}</p>
+		<p><b>Cantidad de Personas:</b> #{paqueteBean.paquete.cantidadPersonas} &nbsp; <b>Precio del paquete:</b> \$ #{paqueteBean.paquete.precio}</p>
+		<p><b>Cantidad de paquetes disponibles:</b> #{paqueteBean.paquete.cantidadDisponible}</p>
+		<p:separator/>
+		<p><b>Pasaje incluido con el paquete:</b></p>
+		<p>Desde: #{paqueteBean.paquete.getPasaje().getOrigen()} &nbsp;&nbsp; hasta: #{paqueteBean.paquete.getPasaje().getDestino()}</p>
+		<p>Sale el #{paqueteBean.paquete.getPasaje().getFechaPartida()} y vuelve el #{paqueteBean.paquete.getPasaje().getFechaRegreso()}</p>
+		<p>Medio de transporte: #{paqueteBean.paquete.getPasaje().getMedioTransporte()}</p>
+		<p:separator/>
+		<p><b>Estadía incluida con el paquete:</b></p>
+		<p>Hotel: #{paqueteBean.paquete.getHotel().getNombre()}</p>
+		<p>Locación: #{paqueteBean.paquete.getHotel().getDireccion()}</p>
+		<p:separator/>
+		<p><b>Actividad incluida en el paquete:</b> #{paqueteBean.paquete.getActividad().getNombre()}</p>
+		<p>#{paqueteBean.paquete.getActividad().getDescripcion()}</p>
+		<p>Fecha de la actividad: #{paqueteBean.paquete.getActividad().getFechaActividad()}</p>
+	</p:dialog>
+	
+	<!-- widget editar paquete -->
+	<p:dialog id="dialog" widgetVar="widgetdialog" header="Editar Paquete" modal="true" resizable="true" closeOnEscape="true" draggable="true">
+		<h:form id="frmDialog">
+			<h:panelGrid columns="2">
+				
+				<p:outputLabel for="nombre" value="Nombre"/>
+				<p:inputText id="nombre" value="#{paqueteBean.paquete.nombre}" />
+				
+				<p:outputLabel for="descripcion" value="Descripción"/>
+				<p:inputText id="descripcion" value="#{paqueteBean.paquete.descripcion}" />
+				
+				<p:outputLabel for="personas" value="Cant. Personas"/>
+				<p:inputText id="personas" value="#{paqueteBean.paquete.cantidadPersonas}" />
+				
+				<p:outputLabel for="precio" value="Precio"/>
+				<p:inputText id="precio" value="#{paqueteBean.paquete.precio}" />
+				
+				<p:outputLabel for="disponible" value="Cant. Disponible"/>
+				<p:inputText id="disponible" value="#{paqueteBean.paquete.cantidadDisponible}" />
+				
+				<p:outputLabel for="pasaje" value="Id_P"/>
+				<p:selectOneMenu id="pasaje" value="#{paqueteBean.pasajeId}">
+					<f:selectItem itemLabel="- Seleccione -" />
+					<f:selectItems value="#{paqueteBean.getPasajes()}" var="psj" itemValue="#{psj.id}" itemLabel="#{psj.id}" />
+				</p:selectOneMenu>
+				
+				<p:outputLabel for="hotel" value="Id_H"/>
+				<p:selectOneMenu id="hotel" value="#{paqueteBean.hotelId}">
+					<f:selectItem itemLabel="- Seleccione -" />
+					<f:selectItems value="#{paqueteBean.getHoteles()}" var="hot" itemValue="#{hot.id}" itemLabel="#{hot.id}" />
+				</p:selectOneMenu>
+				
+				<p:outputLabel for="actividad" value="Id_A"/>
+				<p:selectOneMenu id="actividad" value="#{paqueteBean.actividadId}">
+					<f:selectItem itemLabel="- Seleccione -" />
+					<f:selectItems value="#{paqueteBean.getActividades()}" var="act" itemValue="#{act.id}" itemLabel="#{act.id}" />
+				</p:selectOneMenu>
+				
+				<br/>
+				<p:commandButton value="Modificar" icon="ui-icon-check" action="#{paqueteBean.updatePaquete}" onclick="PF('widgetdialog').hide();" update="frmPaquetes"/>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+
+</body>
+</html>

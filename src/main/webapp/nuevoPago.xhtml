@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head>
+	<title>Nuevo Pago</title>
+</h:head> 
+<body>
+
+	<p:breadCrumb>
+		<p:menuitem value="Home" url="home.xhtml" />
+		<p:menuitem value="Pagos" url="pagos.xhtml" />
+		<p:menuitem value="Nuevo" url="nuevaPago.xhtml" />
+	</p:breadCrumb>
+	
+	<br/>
+
+	<h:form>
+		<p:fieldset legend="Nuevo Pago">
+			<h:panelGrid id="grid" columns="3">
+				
+				<p:outputLabel for="fecPago" value="Fec. Pago"/>
+				<p:calendar id="fecPago" value="#{pagoBean.pago.fechaPago}" pattern="dd/mm/yyyy" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="fecPago"/>
+				
+				<p:outputLabel for="importe" value="Importe"/>
+				<p:inputText id="importe" value="#{pagoBean.pago.importe}" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="importe"/>
+				
+				<p:outputLabel for="reserva" value="Reserva"/>
+				<p:selectOneMenu id="reserva" value="#{pagoBean.reservaId}" required="true" style="width: 200px" requiredMessage="El campo no puede estar vacío">
+					<f:selectItem itemLabel="- Seleccione -" />
+					<f:selectItems value="#{pagoBean.getReservas()}" var="r" itemValue="#{r.id}" itemLabel="#{r.id} - #{r.fechaReserva} - #{r.estado}" />
+				</p:selectOneMenu>		
+				<p:message for="reserva"/>	
+				
+				<p:outputLabel for="medioDePago" value="Medio de Pago"/>
+				<p:selectOneMenu id="medioDePago" value="#{pagoBean.medioDePagoId}" required="true" style="width: 200px" requiredMessage="El campo no puede estar vacío">
+					<f:selectItem itemLabel="- Seleccione -" />
+					<f:selectItems value="#{pagoBean.getMediosDePago()}" var="mp" itemValue="#{mp.id}" itemLabel="#{mp.nombre}" />
+				</p:selectOneMenu>		
+				<p:message for="medioDePago"/>	
+					
+				<p:commandButton icon="ui-icon-check" actionListener="#{pagoBean.createPago()}" value="Guardar" action="pagos.xhtml?faces-redirect=true" update="grid"/>
+				<p:button icon="ui-icon-close" value="Cancelar" outcome="pagos.xhtml?faces-redirect=true"/>
+			</h:panelGrid>
+		</p:fieldset>
+	</h:form>
+
+</body> 
+</html>

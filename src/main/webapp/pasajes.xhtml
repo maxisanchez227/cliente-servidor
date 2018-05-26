@@ -73,7 +73,7 @@
 			<p:column headerText=" " width="20" toggleable="false">
 				<p:commandLink title="Eliminar" actionListener="#{pasajeBean.deletePasaje(p)}" update="frmPasajes">
 					<h:graphicImage library="images" name="delete.png" height="20" width="20"/>
-					<p:confirm header="Eliminar Rol" message="¿Está seguro?" icon="ui-icon-alert"/>
+					<p:confirm header="Eliminar Pasaje" message="¿Está seguro?" icon="ui-icon-alert"/>
 				</p:commandLink>
 				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 					<p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
@@ -100,6 +100,7 @@
 				<p:inputText id="precio" value="#{pasajeBean.pasaje.precioPasaje}"/>
 				<p:outputLabel for="transporte" value="Transporte"/>
 				<p:inputText id="transporte" value="#{pasajeBean.pasaje.medioTransporte}"/>
+				<br/>
 				<p:commandButton value="Modificar" icon="ui-icon-check" action="#{pasajeBean.updatePasaje}" onclick="PF('widgetdialog').hide();" update="frmPasajes"/>
 			</h:panelGrid>
 		</h:form>

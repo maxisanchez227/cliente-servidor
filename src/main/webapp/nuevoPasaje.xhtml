@@ -20,26 +20,32 @@
 
 	<h:form>
 		<p:fieldset legend="Nuevo Pasaje">
-			<h:panelGrid columns="2">
+			<h:panelGrid id="grid" columns="3">
 				<p:outputLabel for="origen" value="Origen"/>
-				<p:inputText id="origen" value="#{pasajeBean.pasaje.origen}"/>
+				<p:inputText id="origen" value="#{pasajeBean.pasaje.origen}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="origen"/>
 				
 				<p:outputLabel for="destino" value="Destino"/>
-				<p:inputText id="destino" value="#{pasajeBean.pasaje.destino}"/>
+				<p:inputText id="destino" value="#{pasajeBean.pasaje.destino}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="destino"/>
 				
 				<p:outputLabel for="fecPartida" value="Fec. Partida"/>
-				<p:calendar id="fecPartida" value="#{pasajeBean.pasaje.fechaPartida}"/>
+				<p:calendar id="fecPartida" value="#{pasajeBean.pasaje.fechaPartida}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="fecPartida"/>
 				
 				<p:outputLabel for="fecRegreso" value="Fec. Regreso"/>
-				<p:calendar id="fecRegreso" value="#{pasajeBean.pasaje.fechaRegreso}"/>
+				<p:calendar id="fecRegreso" value="#{pasajeBean.pasaje.fechaRegreso}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="fecRegreso"/>
 				
 				<p:outputLabel for="precio" value="Precio"/>
-				<p:inputText id="precio" value="#{pasajeBean.pasaje.precioPasaje}"/>
+				<p:inputText id="precio" value="#{pasajeBean.pasaje.precioPasaje}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="precio"/>
 				
 				<p:outputLabel for="transporte" value="Transporte"/>
-				<p:inputText id="transporte" value="#{pasajeBean.pasaje.medioTransporte}"/>
+				<p:inputText id="transporte" value="#{pasajeBean.pasaje.medioTransporte}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="transporte"/>
 				
-				<p:commandButton icon="ui-icon-check" actionListener="#{pasajeBean.createPasaje()}" value="Guardar" action="pasajes.xhtml?faces-redirect=true"/>
+				<p:commandButton icon="ui-icon-check" actionListener="#{pasajeBean.createPasaje()}" value="Guardar" action="pasajes.xhtml?faces-redirect=true" update="grid"/>
 				<p:button icon="ui-icon-close" value="Cancelar" outcome="pasajes.xhtml?faces-redirect=true"/>
 			</h:panelGrid>
 		</p:fieldset>

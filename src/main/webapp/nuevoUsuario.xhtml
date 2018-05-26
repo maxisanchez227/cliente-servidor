@@ -20,29 +20,38 @@
 
 	<h:form>
 		<p:fieldset legend="Nuevo Usuario">
-			<h:panelGrid columns="2">
+			<h:panelGrid id="grid" columns="3">
 				<p:outputLabel for="nombre" value="Nombre"/>
-				<p:inputText id="nombre" value="#{usuarioBean.usuario.nombre}" />
+				<p:inputText id="nombre" value="#{usuarioBean.usuario.nombre}" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="nombre"/>
 				<p:outputLabel for="apellido" value="Apellido"/>
-				<p:inputText id="apellido" value="#{usuarioBean.usuario.apellido}" />
+				<p:inputText id="apellido" value="#{usuarioBean.usuario.apellido}" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="apellido"/>
 				<p:outputLabel for="dni" value="DNI"/>
-				<p:inputText id="dni" value="#{usuarioBean.usuario.dni}" />
+				<p:inputText id="dni" value="#{usuarioBean.usuario.dni}" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="dni"/>
 				<p:outputLabel for="fechaNac" value="Fecha Nac."/>
-				<p:calendar id="fechaNac" value="#{usuarioBean.usuario.fechaNac}" pattern="dd/mm/yyyy" />
+				<p:calendar id="fechaNac" value="#{usuarioBean.usuario.fechaNac}" pattern="dd/mm/yyyy" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="fechaNac"/>
 				<p:outputLabel for="direccion" value="Dirección"/>
-				<p:inputText id="direccion" value="#{usuarioBean.usuario.direccion}" />
+				<p:inputText id="direccion" value="#{usuarioBean.usuario.direccion}" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="direccion"/>
 				<p:outputLabel for="email" value="E-Mail"/>
-				<p:inputText id="email" value="#{usuarioBean.usuario.email}" />
+				<p:inputText id="email" value="#{usuarioBean.usuario.email}" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="email"/>
 				<p:outputLabel for="username" value="Nombre Usuario"/>
-				<p:inputText id="username" value="#{usuarioBean.usuario.username}" />
+				<p:inputText id="username" value="#{usuarioBean.usuario.username}" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="username"/>
 				<p:outputLabel for="password" value="Contraseña"/>
-				<p:inputText id="password" value="#{usuarioBean.usuario.password}" />
+				<p:inputText id="password" value="#{usuarioBean.usuario.password}" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="password"/>
 				<p:outputLabel for="rol" value="Rol"/>
-				<p:selectOneMenu id="rol" value="#{usuarioBean.rolId}">
+				<p:selectOneMenu id="rol" value="#{usuarioBean.rolId}" required="true" requiredMessage="El campo no puede estar vacío">
 					<f:selectItem itemLabel="- Seleccione -" />
 					<f:selectItems value="#{usuarioBean.getRoles()}" var="r" itemValue="#{r.id}" itemLabel="#{r.nombre}" />
-				</p:selectOneMenu>				
-				<p:commandButton icon="ui-icon-check" actionListener="#{usuarioBean.createUsuario()}" value="Guardar" action="usuarios.xhtml?faces-redirect=true"/>
+				</p:selectOneMenu>		
+				<p:message for="rol"/>		
+				<p:commandButton icon="ui-icon-check" actionListener="#{usuarioBean.createUsuario()}" value="Guardar" action="usuarios.xhtml?faces-redirect=true" update="grid"/>
 				<p:button icon="ui-icon-close" value="Cancelar" outcome="usuarios.xhtml?faces-redirect=true"/>
 			</h:panelGrid>
 		</p:fieldset>

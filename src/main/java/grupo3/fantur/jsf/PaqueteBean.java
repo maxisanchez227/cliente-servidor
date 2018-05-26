@@ -133,6 +133,9 @@ public class PaqueteBean {
 	 */
 	public void leer(Paquete p) {
 		paquete = p;
+		pasajeId = p.getPasaje().getId();
+		hotelId = p.getHotel().getId();
+		actividadId = p.getActividad().getId();
 	}
 
 }

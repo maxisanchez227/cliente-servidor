@@ -1,11 +1,77 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"> 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
 
-<h:head></h:head> 
-<body> 
+<h:head>
+	<title>Listado Medios de Pago</title>
+	<style>
+		.ui-datatable .ui-datatable-header, .ui-datatable .ui-datatable-footer {
+    		text-align: right;
+    		padding: 4px 10px;
+		}
+	</style>
+</h:head>
+<body>
 
-</body> 
+	<p:breadCrumb>
+		<p:menuitem value="Home" url="home.xhtml" />
+		<p:menuitem value="Medios de Pago" url="mediosDePago.xhtml" />
+	</p:breadCrumb>
+	
+	<br/>
+	
+	<!-- lista medios de pago -->
+	<h:form id="frmMediosDePago">
+		<p:dataTable id="mediosDePago" value="#{medioDePagoBean.listaMediosDePago()}" var="m" stickyHeader="true" >
+		
+			<f:facet name="header">
+				<p:button value="Nuevo" outcome="nuevoMedioDePago.xhtml" icon="ui-icon-plus" />
+				<span />
+				<p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" />
+				<p:columnToggler datasource="mediosDePago" trigger="toggler" />
+			</f:facet>
+			
+			<p:column headerText="Id" width="20">
+				<h:outputText value="#{m.id}"/>
+			</p:column>
+			
+			<p:column headerText="Nombre">
+				<h:outputText value="#{m.nombre}" />
+			</p:column>
+			
+			<p:column headerText=" " width="20" toggleable="false">
+				<p:commandLink title="Editar" actionListener="#{medioDePagoBean.leer(m)}" oncomplete="PF('widgetdialog').show();" update="dialog">
+					<h:graphicImage library="images" name="edit.ico" height="20" width="20"/>
+				</p:commandLink>
+			</p:column>
+			
+			<p:column headerText=" " width="20" toggleable="false">
+				<p:commandLink title="Eliminar" actionListener="#{medioDePagoBean.deleteMedioDePago(m)}" update="frmMediosDePago">
+					<h:graphicImage library="images" name="delete.png" height="20" width="20"/>
+					<p:confirm header="Eliminar Medio de Pago" message="¿Está seguro?" icon="ui-icon-alert"/>
+				</p:commandLink>
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+					<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>					
+				</p:confirmDialog>
+			</p:column>
+			
+		</p:dataTable>
+	</h:form>
+	
+	<!-- widget editar medio de pago -->
+	<p:dialog id="dialog" widgetVar="widgetdialog" header="Editar Medio de Pago" modal="true" resizable="false" closeOnEscape="true" draggable="false">
+		<h:form id="frmDialog">
+			<h:panelGrid columns="3">
+				<p:outputLabel for="nombre" value="Nombre"/>
+				<p:inputText id="nombre" value="#{medioDePagoBean.medioDePago.nombre}" />
+				<p:commandButton value="Modificar" icon="ui-icon-check" action="#{medioDePagoBean.updateMedioDePago}" onclick="PF('widgetdialog').hide();" update="frmMediosDePago"/>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+</body>
 </html>

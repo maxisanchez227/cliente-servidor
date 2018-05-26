@@ -20,17 +20,20 @@
 
 	<h:form>
 		<p:fieldset legend="Nuevo Hotel">
-			<h:panelGrid columns="2">
+			<h:panelGrid id="grid" columns="3">
 				<p:outputLabel for="nombre" value="Nombre Hotel"/>
-				<p:inputText id="nombre" value="#{hotelBean.hotel.nombre}"/>
+				<p:inputText id="nombre" value="#{hotelBean.hotel.nombre}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="nombre"/>
 				
 				<p:outputLabel for="direccion" value="Dirección"/>
-				<p:inputText id="direccion" value="#{hotelBean.hotel.direccion}"/>
+				<p:inputText id="direccion" value="#{hotelBean.hotel.direccion}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="direccion"/>
 				
 				<p:outputLabel for="precio" value="Precio x Persona"/>
-				<p:inputText id="precio" value="#{hotelBean.hotel.precioPorPersona}"/>
+				<p:inputText id="precio" value="#{hotelBean.hotel.precioPorPersona}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="precio"/>
 				
-				<p:commandButton icon="ui-icon-check" actionListener="#{hotelBean.createHotel()}" value="Guardar" action="hoteles.xhtml?faces-redirect=true"/>
+				<p:commandButton icon="ui-icon-check" actionListener="#{hotelBean.createHotel()}" value="Guardar" action="hoteles.xhtml?faces-redirect=true" update="grid"/>
 				<p:button icon="ui-icon-close" value="Cancelar" outcome="hoteles.xhtml?faces-redirect=true"/>
 			</h:panelGrid>
 		</p:fieldset>

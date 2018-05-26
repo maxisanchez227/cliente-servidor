@@ -82,6 +82,7 @@
 				<p:inputText id="direccion" value="#{hotelBean.hotel.direccion}"/>
 				<p:outputLabel for="precio" value="Precio x Persona"/>
 				<p:inputText id="precio" value="#{hotelBean.hotel.precioPorPersona}"/>
+				<br/>
 				<p:commandButton value="Modificar" icon="ui-icon-check" action="#{hotelBean.updateHotel}" onclick="PF('widgetdialog').hide();" update="frmHoteles"/>
 			</h:panelGrid>
 		</h:form>

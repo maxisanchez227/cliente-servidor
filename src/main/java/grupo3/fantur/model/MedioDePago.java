@@ -21,7 +21,7 @@ public class MedioDePago {
 
 	@NotNull
 	@Size(min = 1, max = 50)
-	@Pattern(regexp = "[a-z \\s A-Z 0-9 ñ Ñ]{1,50}", message = "El nombre no puede contener caracteres no válidos")
+	@Pattern(regexp = "[a-z \\s A-Z 0-9 ñ Ñ á é í ó ú]{1,50}", message = "El nombre no puede contener caracteres no válidos")
 	@Column(name = "nombre", nullable = false)
 	private String nombre;
 

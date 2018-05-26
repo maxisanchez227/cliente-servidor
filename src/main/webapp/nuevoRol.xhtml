@@ -20,10 +20,11 @@
 
 	<h:form>
 		<p:fieldset legend="Nuevo Rol">
-			<h:panelGrid columns="2">
+			<h:panelGrid id="grid" columns="3">
 				<p:outputLabel for="nombre" value="Nombre Rol"/>
-				<p:inputText id="nombre" value="#{rolBean.rol.nombre}"/>
-				<p:commandButton icon="ui-icon-check" actionListener="#{rolBean.createRol()}" value="Guardar" action="roles.xhtml?faces-redirect=true"/>
+				<p:inputText id="nombre" value="#{rolBean.rol.nombre}" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="nombre"/>
+				<p:commandButton icon="ui-icon-check" actionListener="#{rolBean.createRol()}" value="Guardar" action="roles.xhtml?faces-redirect=true" update="grid"/>
 				<p:button icon="ui-icon-close" value="Cancelar" outcome="roles.xhtml?faces-redirect=true"/>
 			</h:panelGrid>
 		</p:fieldset>

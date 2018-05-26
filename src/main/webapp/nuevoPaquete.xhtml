@@ -20,41 +20,49 @@
 
 	<h:form>
 		<p:fieldset legend="Nuevo Paquete">
-			<h:panelGrid columns="2">
+			<h:panelGrid id="grid" columns="3">
 				<p:outputLabel for="nombre" value="Nombre"/>
-				<p:inputText id="nombre" value="#{paqueteBean.paquete.nombre}" />
+				<p:inputText id="nombre" value="#{paqueteBean.paquete.nombre}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="nombre"/>
 				
 				<p:outputLabel for="descripcion" value="Descripción"/>
-				<p:inputText id="descripcion" value="#{paqueteBean.paquete.descripcion}" />
+				<p:inputText id="descripcion" value="#{paqueteBean.paquete.descripcion}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="descripcion"/>
 				
 				<p:outputLabel for="personas" value="Cant. Personas"/>
-				<p:inputText id="personas" value="#{paqueteBean.paquete.cantidadPersonas}" />
+				<p:inputText id="personas" value="#{paqueteBean.paquete.cantidadPersonas}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="personas"/>
 				
 				<p:outputLabel for="precio" value="Precio"/>
-				<p:inputText id="precio" value="#{paqueteBean.paquete.precio}" />
+				<p:inputText id="precio" value="#{paqueteBean.paquete.precio}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="precio"/>
 				
 				<p:outputLabel for="disponible" value="Cant. Disponible"/>
-				<p:inputText id="disponible" value="#{paqueteBean.paquete.cantidadDisponible}" />
+				<p:inputText id="disponible" value="#{paqueteBean.paquete.cantidadDisponible}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="disponible"/>
 				
 				<p:outputLabel for="pasaje" value="Pasaje"/>
-				<p:selectOneMenu id="pasaje" value="#{paqueteBean.pasajeId}">
+				<p:selectOneMenu id="pasaje" value="#{paqueteBean.pasajeId}" required="true" requiredMessage="Este campo no puede estar vacío">
 					<f:selectItem itemLabel="- Seleccione -" />
-					<f:selectItems value="#{paqueteBean.getPasajes()}" var="psj" itemValue="#{psj.id}" itemLabel="#{psj.id}" />
+					<f:selectItems value="#{paqueteBean.getPasajes()}" var="psj" itemValue="#{psj.id}" itemLabel="#{psj.origen} - #{psj.destino}" />
 				</p:selectOneMenu>
+				<p:message for="pasaje"/>
 				
 				<p:outputLabel for="hotel" value="Hotel"/>
-				<p:selectOneMenu id="hotel" value="#{paqueteBean.hotelId}">
+				<p:selectOneMenu id="hotel" value="#{paqueteBean.hotelId}" required="true" requiredMessage="Este campo no puede estar vacío">
 					<f:selectItem itemLabel="- Seleccione -" />
-					<f:selectItems value="#{paqueteBean.getHoteles()}" var="hot" itemValue="#{hot.id}" itemLabel="#{hot.id}" />
+					<f:selectItems value="#{paqueteBean.getHoteles()}" var="hot" itemValue="#{hot.id}" itemLabel="#{hot.nombre}" />
 				</p:selectOneMenu>
+				<p:message for="hotel"/>
 				
 				<p:outputLabel for="actividad" value="Actividad"/>
-				<p:selectOneMenu id="actividad" value="#{paqueteBean.actividadId}">
+				<p:selectOneMenu id="actividad" value="#{paqueteBean.actividadId}" required="true" requiredMessage="Este campo no puede estar vacío">
 					<f:selectItem itemLabel="- Seleccione -" />
-					<f:selectItems value="#{paqueteBean.getActividades()}" var="act" itemValue="#{act.id}" itemLabel="#{act.id}" />
+					<f:selectItems value="#{paqueteBean.getActividades()}" var="act" itemValue="#{act.id}" itemLabel="#{act.nombre}" />
 				</p:selectOneMenu>	
+				<p:message for="actividad"/>
 				
-				<p:commandButton icon="ui-icon-check" actionListener="#{paqueteBean.createPaquete()}" value="Guardar" action="paquetes.xhtml?faces-redirect=true"/>
+				<p:commandButton icon="ui-icon-check" actionListener="#{paqueteBean.createPaquete()}" value="Guardar" action="paquetes.xhtml?faces-redirect=true" update="grid"/>
 				<p:button icon="ui-icon-close" value="Cancelar" outcome="paquetes.xhtml?faces-redirect=true"/>
 			</h:panelGrid>
 		</p:fieldset>

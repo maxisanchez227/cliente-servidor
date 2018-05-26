@@ -88,6 +88,7 @@
 				<p:inputText id="precio" value="#{actividadBean.actividad.precioPorPersona}"/>
 				<p:outputLabel for="descripcion" value="Descripción"/>
 				<p:inputText id="descripcion" value="#{actividadBean.actividad.descripcion}"/>
+				<br/>
 				<p:commandButton value="Modificar" icon="ui-icon-check" action="#{actividadBean.updateActividad}" onclick="PF('widgetdialog').hide();" update="frmActividades"/>
 			</h:panelGrid>
 		</h:form>

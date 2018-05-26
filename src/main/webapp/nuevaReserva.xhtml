@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head>
+	<title>Nueva Reserva</title>
+</h:head> 
+<body>
+
+	<p:breadCrumb>
+		<p:menuitem value="Home" url="home.xhtml" />
+		<p:menuitem value="Reservas" url="reservas.xhtml" />
+		<p:menuitem value="Nuevo" url="nuevaReserva.xhtml" />
+	</p:breadCrumb>
+	
+	<br/>
+
+	<h:form>
+		<p:fieldset legend="Nueva Reserva">
+			<h:panelGrid id="grid" columns="3">
+				
+				<p:outputLabel for="fecReserva" value="Fec. Reserva"/>
+				<p:calendar id="fecReserva" value="#{reservaBean.reserva.fechaReserva}" pattern="dd/mm/yyyy" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="fecReserva"/>
+				
+				<p:outputLabel for="estado" value="Estado"/>
+				<p:inputText id="estado" value="#{reservaBean.reserva.estado}" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="estado"/>
+				
+				<p:outputLabel for="usuario" value="Usuario"/>
+				<p:selectOneMenu id="usuario" value="#{reservaBean.usuarioId}" required="true" style="width: 200px" requiredMessage="El campo no puede estar vacío">
+					<f:selectItem itemLabel="- Seleccione -" />
+					<f:selectItems value="#{reservaBean.getUsuarios()}" var="u" itemValue="#{u.id}" itemLabel="#{u.id} - #{u.apellido}, #{u.nombre}" />
+				</p:selectOneMenu>		
+				<p:message for="usuario"/>	
+				
+				<p:outputLabel for="paquete" value="Paquete"/>
+				<p:selectOneMenu id="paquete" value="#{reservaBean.paqueteId}" required="true" style="width: 200px" requiredMessage="El campo no puede estar vacío">
+					<f:selectItem itemLabel="- Seleccione -" />
+					<f:selectItems value="#{reservaBean.getPaquetes()}" var="p" itemValue="#{p.id}" itemLabel="#{p.id} - #{p.nombre}" />
+				</p:selectOneMenu>		
+				<p:message for="paquete"/>	
+					
+				<p:commandButton icon="ui-icon-check" actionListener="#{reservaBean.createReserva()}" value="Guardar" action="reservas.xhtml?faces-redirect=true" update="grid"/>
+				<p:button icon="ui-icon-close" value="Cancelar" outcome="reservas.xhtml?faces-redirect=true"/>
+			</h:panelGrid>
+		</p:fieldset>
+	</h:form>
+
+</body> 
+</html>

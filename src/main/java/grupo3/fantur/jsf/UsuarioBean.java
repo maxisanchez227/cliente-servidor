@@ -81,6 +81,7 @@ public class UsuarioBean {
 	 */
 	public void leer(Usuario u) {
 		usuario = u;
+		rolId = u.getRol().getId();
 	}
 
 }

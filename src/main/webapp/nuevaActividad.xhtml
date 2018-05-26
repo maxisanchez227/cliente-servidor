@@ -20,20 +20,24 @@
 
 	<h:form>
 		<p:fieldset legend="Nueva Actividad">
-			<h:panelGrid columns="2">
+			<h:panelGrid id="grid" columns="3">
 				<p:outputLabel for="nombre" value="Nombre"/>
-				<p:inputText id="nombre" value="#{actividadBean.actividad.nombre}"/>
+				<p:inputText id="nombre" value="#{actividadBean.actividad.nombre}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="nombre"/>
 				
 				<p:outputLabel for="fecha" value="Fecha"/>
-				<p:calendar id="fecha" value="#{actividadBean.actividad.fechaActividad}"/>
+				<p:calendar id="fecha" value="#{actividadBean.actividad.fechaActividad}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="fecha"/>
 				
 				<p:outputLabel for="precio" value="Precio x Persona"/>
-				<p:inputText id="precio" value="#{actividadBean.actividad.precioPorPersona}"/>
+				<p:inputText id="precio" value="#{actividadBean.actividad.precioPorPersona}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="precio"/>
 				
 				<p:outputLabel for="descripcion" value="Descripción"/>
-				<p:inputText id="descripcion" value="#{actividadBean.actividad.descripcion}"/>
+				<p:inputText id="descripcion" value="#{actividadBean.actividad.descripcion}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+				<p:message for="descripcion"/>
 
-				<p:commandButton icon="ui-icon-check" actionListener="#{actividadBean.createActividad()}" value="Guardar" action="actividades.xhtml?faces-redirect=true"/>
+				<p:commandButton icon="ui-icon-check" actionListener="#{actividadBean.createActividad()}" value="Guardar" action="actividades.xhtml?faces-redirect=true" update="grid"/>
 				<p:button icon="ui-icon-close" value="Cancelar" outcome="actividades.xhtml?faces-redirect=true"/>
 			</h:panelGrid>
 		</p:fieldset>

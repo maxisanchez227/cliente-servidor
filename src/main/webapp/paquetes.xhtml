@@ -28,7 +28,7 @@
 		<p:dataTable id="paquetes" value="#{paqueteBean.listaPaquetes()}" var="p" stickyHeader="true" >
 		
 			<f:facet name="header">
-				<p:button value="Nuevo" outcome="nuevoPaquete.xhtml" icon="ui-icon-plus" />
+				<p:button value="Nuevo" outcome="altaPaquete.xhtml" icon="ui-icon-plus" />
 				<span />
 				<p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" />
 				<p:columnToggler datasource="paquetes" trigger="toggler" />

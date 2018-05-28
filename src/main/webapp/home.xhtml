@@ -7,27 +7,83 @@
 
 <h:head>
 	<title>FANTUR</title>
+	<style>
+		
+		.header {
+			padding-bottom: 0.5em;
+		}
+		
+	</style>
 </h:head>
 <body>
-	<h1 style="text-align: center">FANTUR</h1>
-	<p:separator />
-	<p:link value="Roles" outcome="roles.xhtml" />
-	<p:separator />
-	<p:link value="Usuarios" outcome="usuarios.xhtml" />
-	<p:separator />
-	<p:link value="Pasajes" outcome="pasajes.xhtml" />
-	<p:separator />
-	<p:link value="Hoteles" outcome="hoteles.xhtml" />
-	<p:separator />
-	<p:link value="Actividades" outcome="actividades.xhtml" />
-	<p:separator />
-	<p:link value="Paquetes" outcome="paquetes.xhtml" />
-	<p:separator />
-	<p:link value="Reservas" outcome="reservas.xhtml" />
-	<p:separator />
-	<p:link value="Medios de pago" outcome="mediosDePago.xhtml" />
-	<p:separator />
-	<p:link value="Pagos" outcome="pagos.xhtml" />
-	<p:separator />
+
+	<div class="header">
+		<h:form>
+			<p:menubar id="menubar">
+				
+				<p:submenu label="Usuarios">
+					<p:menuitem value="Usuarios Registrados" action="usuarios.xhtml?faces-redirect=true" />
+					<p:menuitem value="Roles" action="roles.hxtml?faces-redirect=true"/>
+				</p:submenu>
+				
+				<p:submenu label="Paquetes">
+					<p:menuitem value="Paquetes Registrados" action="paquetes.xhtml?faces-redirect=true" />
+					<p:menuitem value="Pasajes" action="pasajes.hxtml?faces-redirect=true"/>
+					<p:menuitem value="Hoteles" action="hoteles.hxtml?faces-redirect=true"/>
+					<p:menuitem value="Actividades" action="actividades.hxtml?faces-redirect=true"/>
+				</p:submenu>
+				
+				<p:submenu label="Reservas">
+					<p:menuitem value="Reservas Registradas" action="reservas.xhtml?faces-redirect=true" />
+				</p:submenu>
+				
+				<p:submenu label="Pagos">
+					<p:menuitem value="Pagos Registradas" action="pagos.xhtml?faces-redirect=true" />
+					<p:menuitem value="Medios de Pago" action="mediosDePago.xhtml?faces-redirect=true" />
+				</p:submenu>
+			
+				<f:facet name="options">
+	            	<p:commandButton type="button" value="Cerrar Sesión" icon="ui-icon-power" />
+	        	</f:facet>
+			</p:menubar>
+		</h:form>
+	</div>
+	
+	<div class="dashboard">
+		
+		<div style="background-color: rgb(204, 238, 255); border: 1px solid #4dc4ff; padding: 2px;">
+	  		<p:button value="Nuevo Paquete" outcome="armadoCotizacionPaquete.xhtml" icon="ui-icon-plus" />
+		</div>
+		
+		<h:form>
+			<p:dataGrid value="#{paqueteBean.listaPaquetes()}" var="p" columns="4" layout="grid"
+				paginator="true" rows="8" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} 
+				{PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="4,8,12,16">
+			
+				<f:facet name="header">Paquetes Disponibles</f:facet>
+				
+				<p:panel header="P-#{p.id}" footer="Precio: $#{p.precio}">
+					<span style="font-size: 0.8em;">A: <b>#{p.pasaje.destino}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					#{p.cantidadPersonas} Persona(s)</span>
+					<br/>
+					<p:rating />#{p.hotel.nombre}
+					<br/>
+					<span style="font-size: 0.7em; margin-right: 2px">desde:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hasta:</span><br/>
+					<span style="font-size: 0.8em;">&nbsp;#{p.pasaje.fechaPartida}</span>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<span style="font-size: 0.8em;">#{p.pasaje.fechaRegreso}</span>
+					<br/>
+					<p:link value="Ver detalle" style="float: right; color: blue;"></p:link>
+					<br/>
+				</p:panel>	
+				
+			</p:dataGrid>
+		</h:form>
+		
+	</div>
+	
 </body>
 </html>

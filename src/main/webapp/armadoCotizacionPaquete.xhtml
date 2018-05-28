@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head>
+	<title>Armado Paquete</title>
+</h:head> 
+<body>
+	
+	<p:breadCrumb>
+		<p:menuitem value="Home" url="home.xhtml" />
+		<p:menuitem value="Armado Paquete" url="armadoCotizacionPaquete.xhtml" />
+	</p:breadCrumb>
+	
+	<br/>
+	
+	<h:form>
+
+		<p:wizard>
+			<p:tab title="Paquete">
+				<p:panel header="Detalle Paquete">
+					<h:panelGrid columns="3" columnClasses="label, value">
+						
+						<p:outputLabel for="nombre" value="Nombre Paquete"/>
+						<p:inputText id="nombre" value="#{paqueteBean.paquete.nombre}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+						<p:message for="nombre"/>
+						
+						<p:outputLabel for="descripcion" value="Descripción"/>
+						<p:inputTextarea id="descripcion" value="#{paqueteBean.paquete.descripcion}" required="true" requiredMessage="Este campo no puede estar vacío"
+							rows="5" cols="60" counter="display" maxlength="255" counterTemplate="Quedan {0} caracteres" autoResize="false"/>
+						<p:message for="descripcion"/>
+						<p:outputLabel/>
+						<h:outputText id="display" />
+						<p:outputLabel/>
+						
+						<p:outputLabel for="disponible" value="Cantidad Disponible"/>
+						<p:inputText id="disponible" value="#{paqueteBean.paquete.cantidadDisponible}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+						<p:message for="disponible"/>
+								
+					</h:panelGrid>
+				</p:panel>
+			</p:tab>
+			
+			<p:tab title="Pasaje">
+				<p:panel header="Detalle Pasaje">
+					<h:panelGrid columns="3" columnClasses="label, value">
+						
+						<p:outputLabel for="pasaje" value="Pasaje"/>
+						<p:selectOneRadio id="pasaje" value="#{paqueteBean.pasajeId}" layout="grid" columns="1" required="true" requiredMessage="Este campo no puede estar vacío">
+							<f:selectItems value="#{paqueteBean.getPasajes()}" var="psj" itemValue="#{psj.id}" 
+										itemLabel="#{psj.origen} (#{psj.fechaPartida}) - #{psj.destino} (#{psj.fechaRegreso}) --- $#{psj.precioPasaje}" />
+						</p:selectOneRadio>
+						<p:message for="pasaje"/>
+								
+					</h:panelGrid>
+				</p:panel>
+			</p:tab>
+			
+			<p:tab title="Hotel">
+				<p:panel header="Detalle Hotel">
+					<h:panelGrid columns="3" columnClasses="label, value">
+
+						<p:outputLabel for="personas" value="Cantidad de Personas"/>
+						<p:inputText id="personas" value="#{paqueteBean.paquete.cantidadPersonas}" required="true" requiredMessage="Este campo no puede estar vacío"/>
+						<p:message for="personas"/>
+
+						<p:outputLabel for="hotel" value="Hotel"/>
+						<p:selectOneRadio id="hotel" value="#{paqueteBean.hotelId}" layout="grid" columns="1" required="true" requiredMessage="Este campo no puede estar vacío">
+							<f:selectItems value="#{paqueteBean.getHoteles()}" var="hot" itemValue="#{hot.id}" itemLabel="#{hot.nombre} - Precio por persona: $#{hot.precioPorPersona}" />
+						</p:selectOneRadio>
+						<p:message for="hotel"/>
+						
+					</h:panelGrid>
+				</p:panel>
+			</p:tab>
+			
+			<p:tab title="Actividades">
+				<p:panel header="Actividades incluidas en el paquete">
+					<h:panelGrid columns="3" columnClasses="label, value">
+
+						<p:outputLabel for="actividad" value="Actividad"/>
+						<p:selectOneRadio id="actividad" value="#{paqueteBean.actividadId}" layout="grid" columns="1" required="true" requiredMessage="Este campo no puede estar vacío">
+							<f:selectItems value="#{paqueteBean.getActividades()}" var="act" itemValue="#{act.id}" itemLabel="#{act.nombre}" />
+						</p:selectOneRadio>	
+						<p:message for="actividad"/>
+
+					</h:panelGrid>
+				</p:panel>
+			</p:tab>
+			
+			<p:tab title="Cotización">
+				<p:panel header="Cotización del paquete">
+					<h:panelGrid columns="2" columnClasses="label, value">
+					
+					<p:outputLabel for="subtotal" value="Subtotal"/>
+					<p:outputLabel id="subtotal" value="$ #{paqueteBean.actualizarSubtotal()}"/>
+					
+					<p:separator/>
+					<p:outputLabel/>
+					
+					<p:slider for="porcentaje" display="output" style="width: 200px" displayTemplate="Porcentaje a cobrar %{value}" />
+					<p:commandButton value="% Aplicar" actionListener="#{paqueteBean.aplicarPorcentaje()}"/>				
+					
+					<h:outputText id="output" value="Porcentaje a cobrar % " />
+			        <h:inputHidden id="porcentaje" value="#{paqueteBean.porcentaje}" />
+
+					</h:panelGrid>
+				</p:panel>
+			</p:tab>
+			
+			<p:tab title="Confirmación">
+				<p:panel header="Confirmación">
+					<p><b>Nombre Paquete: </b>#{paqueteBean.paquete.nombre}</p>
+					<p>#{paqueteBean.paquete.descripcion}</p>
+					<p><b>Cantidad de Personas:</b> #{paqueteBean.paquete.cantidadPersonas}</p>
+					<p><b>Cantidad de paquetes disponibles:</b> #{paqueteBean.paquete.cantidadDisponible}</p>
+					<p><b>Precio del paquete:</b> \$ #{paqueteBean.paquete.precio}</p>
+					<p:separator/>
+					<p><b>Pasaje incluido con el paquete:</b></p>
+					<p>Desde: #{paqueteBean.paquete.getPasaje().getOrigen()} &nbsp;&nbsp; Hasta: #{paqueteBean.paquete.getPasaje().getDestino()}</p>
+					<p>Sale el #{paqueteBean.paquete.getPasaje().getFechaPartida()} y vuelve el #{paqueteBean.paquete.getPasaje().getFechaRegreso()}</p>
+					<p>Medio de transporte: #{paqueteBean.paquete.getPasaje().getMedioTransporte()}</p>
+					<p:separator/>
+					<p><b>Estadía incluida con el paquete:</b></p>
+					<p>Hotel: #{paqueteBean.paquete.getHotel().getNombre()}</p>
+					<p>Locación: #{paqueteBean.paquete.getHotel().getDireccion()}</p>
+					<p:separator/>
+					<p><b>Actividad incluida en el paquete:</b> #{paqueteBean.paquete.getActividad().getNombre()}</p>
+					<p>#{paqueteBean.paquete.getActividad().getDescripcion()}</p>
+					<p>Fecha de la actividad: #{paqueteBean.paquete.getActividad().getFechaActividad()}</p>
+					
+					<p:commandButton icon="ui-icon-check" actionListener="#{paqueteBean.createPaquete()}" value="Guardar" action="home.xhtml?faces-redirect=true"/>
+					<br/>
+				</p:panel>
+			</p:tab>
+		</p:wizard>	
+	
+	</h:form>
+
+</body> 
+</html>

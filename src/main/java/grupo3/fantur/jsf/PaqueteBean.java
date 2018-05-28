@@ -1,5 +1,6 @@
 package grupo3.fantur.jsf;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -27,6 +28,8 @@ public class PaqueteBean {
 	private long pasajeId;
 	private long hotelId;
 	private long actividadId;
+	private float subtotal;
+	private int porcentaje;
 
 	// GETTERS
 
@@ -70,6 +73,22 @@ public class PaqueteBean {
 
 	public void setActividadId(long actividadId) {
 		this.actividadId = actividadId;
+	}
+
+	public float getSubtotal() {
+		return subtotal;
+	}
+
+	public void setSubtotal(float subtotal) {
+		this.subtotal = subtotal;
+	}
+
+	public int getPorcentaje() {
+		return porcentaje;
+	}
+
+	public void setPorcentaje(int porcentaje) {
+		this.porcentaje = porcentaje;
 	}
 
 	@Inject
@@ -136,6 +155,36 @@ public class PaqueteBean {
 		pasajeId = p.getPasaje().getId();
 		hotelId = p.getHotel().getId();
 		actividadId = p.getActividad().getId();
+	}
+
+	// OTROS METODOS
+
+	public float actualizarSubtotal() {
+		Pasaje pasaje = pasajeDao.findById(pasajeId);
+		Hotel hotel = hotelDao.findById(hotelId);
+		Actividad actividad = actividadDao.findById(actividadId);
+		paquete.setPasaje(pasaje);
+		paquete.setHotel(hotel);
+		paquete.setActividad(actividad);
+
+		Date fechaPartida = pasaje.getFechaPartida();
+		Date fechaRegreso = pasaje.getFechaRegreso();
+
+		long f1 = (fechaPartida.getTime() / (1000 * 60 * 60 * 24));
+		long f2 = (fechaRegreso.getTime() / (1000 * 60 * 60 * 24));
+		int days = (int) (f2 - f1);
+
+		subtotal = (paquete.getCantidadPersonas() * hotel.getPrecioPorPersona() * days)
+				+ (paquete.getCantidadPersonas() * actividad.getPrecioPorPersona())
+				+ (paquete.getCantidadPersonas() * pasaje.getPrecioPasaje());
+		
+		paquete.setPrecio(subtotal);
+
+		return subtotal;
+	}
+
+	public void aplicarPorcentaje() {
+		paquete.setPrecio(subtotal + ((porcentaje * subtotal) / 100));
 	}
 
 }

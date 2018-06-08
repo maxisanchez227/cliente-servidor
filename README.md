@@ -9,6 +9,20 @@ Para usar MySQL descomentar 'MySQL5Dialect' y comentar 'PostgreSQL94Dialect' en 
 En la carpea 'tp1' se encuentra el TP 1 MVC 5 y EF con fecha de entrega: 08-05-2018.
 
 #
+
+En la carpea 'tp3' se encuentra el TP 3 CRUD usando MERN Stack con fecha de entrega: 08-06-2018.
+
+Para ejecutar la app:
+
+* Run `npm install`
+* Run `npm run build`
+* Run `npm start`
+
+Este ejemplo se realizo siguiendo los paso del siguiente tutorial:
+(https://www.djamware.com/post/59faec0a80aca7739224ee1f/building-crud-web-application-using-mern-stack)
+
+#
+
 <b>Escenario:</b>
 
 En vísperas al mundial de Rusia 2018 la empresa Fantastic Tour (FANTUR S.A.) ha solicitado a los alumnos de la materia Desarrollo de Aplicaciones Cliente-Servidor el desarrollo de un sistema para la venta y administración de paquetes turísticos.

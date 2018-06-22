@@ -53,11 +53,6 @@ public class Paquete {
 	@JoinColumn(name = "id_hotel", nullable = false)
 	private Hotel hotel;
 
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "id_actividad", nullable = false)
-	private Actividad actividad;
-
 	// CONSTRUCTORES
 
 	public Paquete() {
@@ -128,14 +123,6 @@ public class Paquete {
 
 	public void setHotel(Hotel hotel) {
 		this.hotel = hotel;
-	}
-
-	public Actividad getActividad() {
-		return actividad;
-	}
-
-	public void setActividad(Actividad actividad) {
-		this.actividad = actividad;
 	}
 
 }

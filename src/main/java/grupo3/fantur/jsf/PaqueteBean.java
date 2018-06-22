@@ -9,10 +9,12 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
 import grupo3.fantur.dao.ActividadDao;
+import grupo3.fantur.dao.ActividadesPorPaqueteDao;
 import grupo3.fantur.dao.HotelDao;
 import grupo3.fantur.dao.PaqueteDao;
 import grupo3.fantur.dao.PasajeDao;
 import grupo3.fantur.model.Actividad;
+import grupo3.fantur.model.ActividadesPorPaquete;
 import grupo3.fantur.model.Hotel;
 import grupo3.fantur.model.Paquete;
 import grupo3.fantur.model.Pasaje;
@@ -27,7 +29,8 @@ public class PaqueteBean {
 	private List<Actividad> actividades;
 	private long pasajeId;
 	private long hotelId;
-	private long actividadId;
+//	private long actividadId;
+	private List<String> actividadesDelPaquete;
 	private float subtotal;
 	private int porcentaje;
 
@@ -67,12 +70,20 @@ public class PaqueteBean {
 		this.hotelId = hotelId;
 	}
 
-	public long getActividadId() {
-		return actividadId;
+//	public long getActividadId() {
+//		return actividadId;
+//	}
+//
+//	public void setActividadId(long actividadId) {
+//		this.actividadId = actividadId;
+//	}
+
+	public List<String> getActividadesDelPaquete() {
+		return actividadesDelPaquete;
 	}
 
-	public void setActividadId(long actividadId) {
-		this.actividadId = actividadId;
+	public void setActividadesDelPaquete(List<String> actividadesDelPaquete) {
+		this.actividadesDelPaquete = actividadesDelPaquete;
 	}
 
 	public float getSubtotal() {
@@ -102,6 +113,10 @@ public class PaqueteBean {
 
 	@Inject
 	ActividadDao actividadDao;
+	
+	@Inject
+	ActividadesPorPaqueteDao actividadesPorPaqueteDao;
+	
 
 	@PostConstruct
 	public void init() {
@@ -115,11 +130,28 @@ public class PaqueteBean {
 	public void createPaquete() {
 		Pasaje pasaje = pasajeDao.findById(pasajeId);
 		Hotel hotel = hotelDao.findById(hotelId);
-		Actividad actividad = actividadDao.findById(actividadId);
 		paquete.setPasaje(pasaje);
 		paquete.setHotel(hotel);
-		paquete.setActividad(actividad);
 		paqueteDao.create(paquete);
+		
+		// recorro lista actividadesDelPaquete proveniente del checkbox
+		for(String a: actividadesDelPaquete) {
+			
+			long id = Long.parseLong(a);
+			
+			// creo una fila de la tabla actividadPorPaquete
+			ActividadesPorPaquete actPaq = new ActividadesPorPaquete();
+			
+			// le asigno el paquete
+			actPaq.setPaquete(paquete);
+			
+			// busco la actividad y se la asigno
+			Actividad act = actividadDao.findById(id);
+			actPaq.setActividad(act);
+			
+			// persisto la actividadPorPaquete
+			actividadesPorPaqueteDao.create(actPaq);
+		}		
 	}
 
 	// BAJA
@@ -131,10 +163,8 @@ public class PaqueteBean {
 	public void updatePaquete() {
 		Pasaje pasaje = pasajeDao.findById(pasajeId);
 		Hotel hotel = hotelDao.findById(hotelId);
-		Actividad actividad = actividadDao.findById(actividadId);
 		paquete.setPasaje(pasaje);
 		paquete.setHotel(hotel);
-		paquete.setActividad(actividad);
 		paqueteDao.update(paquete);
 	}
 
@@ -154,7 +184,6 @@ public class PaqueteBean {
 		paquete = p;
 		pasajeId = p.getPasaje().getId();
 		hotelId = p.getHotel().getId();
-		actividadId = p.getActividad().getId();
 	}
 
 	// OTROS METODOS
@@ -162,10 +191,10 @@ public class PaqueteBean {
 	public float actualizarSubtotal() {
 		Pasaje pasaje = pasajeDao.findById(pasajeId);
 		Hotel hotel = hotelDao.findById(hotelId);
-		Actividad actividad = actividadDao.findById(actividadId);
+		//Actividad actividad = actividadDao.findById(actividadId);
+		float subtotalActividades = 0;
 		paquete.setPasaje(pasaje);
 		paquete.setHotel(hotel);
-		paquete.setActividad(actividad);
 
 		Date fechaPartida = pasaje.getFechaPartida();
 		Date fechaRegreso = pasaje.getFechaRegreso();
@@ -175,9 +204,9 @@ public class PaqueteBean {
 		int days = (int) (f2 - f1);
 
 		subtotal = (paquete.getCantidadPersonas() * hotel.getPrecioPorPersona() * days)
-				+ (paquete.getCantidadPersonas() * actividad.getPrecioPorPersona())
+				+ (paquete.getCantidadPersonas() * subtotalActividades)//actividad.getPrecioPorPersona())
 				+ (paquete.getCantidadPersonas() * pasaje.getPrecioPasaje());
-		
+
 		paquete.setPrecio(subtotal);
 
 		return subtotal;

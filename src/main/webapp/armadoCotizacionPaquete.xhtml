@@ -80,13 +80,14 @@
 			<p:tab title="Actividades">
 				<p:panel header="Actividades incluidas en el paquete">
 					<h:panelGrid columns="3" columnClasses="label, value">
-
-						<p:outputLabel for="actividad" value="Actividad"/>
-						<p:selectOneRadio id="actividad" value="#{paqueteBean.actividadId}" layout="grid" columns="1" required="true" requiredMessage="Este campo no puede estar vacío">
+						
+						<p:outputLabel for="actividades" value="Actividades"/>
+						<p:outputLabel/>
+						<p:outputLabel/>
+						<p:selectManyCheckbox id="actividades" value="#{paqueteBean.actividadesDelPaquete}" layout="grid" columns="3">
 							<f:selectItems value="#{paqueteBean.getActividades()}" var="act" itemValue="#{act.id}" itemLabel="#{act.nombre}" />
-						</p:selectOneRadio>	
-						<p:message for="actividad"/>
-
+						</p:selectManyCheckbox>	
+						
 					</h:panelGrid>
 				</p:panel>
 			</p:tab>
@@ -127,10 +128,6 @@
 					<p><b>Estadía incluida con el paquete:</b></p>
 					<p>Hotel: #{paqueteBean.paquete.getHotel().getNombre()}</p>
 					<p>Locación: #{paqueteBean.paquete.getHotel().getDireccion()}</p>
-					<p:separator/>
-					<p><b>Actividad incluida en el paquete:</b> #{paqueteBean.paquete.getActividad().getNombre()}</p>
-					<p>#{paqueteBean.paquete.getActividad().getDescripcion()}</p>
-					<p>Fecha de la actividad: #{paqueteBean.paquete.getActividad().getFechaActividad()}</p>
 					
 					<p:commandButton icon="ui-icon-check" actionListener="#{paqueteBean.createPaquete()}" value="Guardar" action="home.xhtml?faces-redirect=true"/>
 					<br/>

@@ -1,13 +1,18 @@
 package grupo3.fantur.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -19,6 +24,9 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
+
+@SuppressWarnings("deprecation")
 @Entity
 @Table(name = "USUARIO")
 public class Usuario {
@@ -59,6 +67,7 @@ public class Usuario {
 	private String direccion;
 
 	@NotNull
+	@Email(message = "El mail ingresado no es válido")
 	@Column(name = "email", nullable = false)
 	private String email;
 
@@ -70,10 +79,15 @@ public class Usuario {
 	@Column(name = "password", nullable = false)
 	private String password;
 
+	// @NotNull
+	// @ManyToOne
+	// @JoinColumn(name = "id_rol", nullable = false)
+	// private Rol rol;
+
 	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "id_rol", nullable = false)
-	private Rol rol;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "ROLES_POR_USUARIO", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_rol"))
+	private List<Rol> roles = new ArrayList<Rol>();
 
 	// CONSTRUCTORES
 
@@ -159,12 +173,20 @@ public class Usuario {
 		this.password = password;
 	}
 
-	public Rol getRol() {
-		return rol;
+	// public Rol getRol() {
+	// return rol;
+	// }
+	//
+	// public void setRol(Rol rol) {
+	// this.rol = rol;
+	// }
+
+	public List<Rol> getRoles() {
+		return roles;
 	}
 
-	public void setRol(Rol rol) {
-		this.rol = rol;
+	public void setRoles(List<Rol> roles) {
+		this.roles = roles;
 	}
 
 }

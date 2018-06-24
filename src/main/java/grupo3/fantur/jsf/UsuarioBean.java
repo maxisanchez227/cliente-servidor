@@ -18,7 +18,7 @@ public class UsuarioBean {
 
 	private Usuario usuario;
 	private List<Rol> roles;
-	private long rolId;
+	private List<String> rolesId;
 	
 	public Usuario getUsuario() {
 		return usuario;
@@ -28,12 +28,12 @@ public class UsuarioBean {
 		return roles;
 	}
 
-	public long getRolId() {
-		return rolId;
+	public List<String> getRolesId() {
+		return rolesId;
 	}
 
-	public void setRolId(long rolId) {
-		this.rolId = rolId;
+	public void setRolesId(List<String> rolesId) {
+		this.rolesId = rolesId;
 	}
 
 	@Inject
@@ -50,8 +50,11 @@ public class UsuarioBean {
 
 	// ALTA
 	public void createUsuario() {
-		Rol rol = rolDao.findById(rolId);
-		usuario.setRol(rol);
+		for (String rolId : rolesId) {
+			long id = Long.parseLong(rolId);
+			Rol rol = rolDao.findById(id);
+			usuario.getRoles().add(rol);
+		}
 		usuarioDao.create(usuario);
 	}
 
@@ -62,8 +65,12 @@ public class UsuarioBean {
 
 	// MODIFICACION
 	public void updateUsuario() {
-		Rol rol = rolDao.findById(rolId);
-		usuario.setRol(rol);
+		usuario.getRoles().clear();
+		for (String rolId : rolesId) {
+			long id = Long.parseLong(rolId);
+			Rol rol = rolDao.findById(id);
+			usuario.getRoles().add(rol);
+		}
 		usuarioDao.update(usuario);
 	}
 
@@ -81,7 +88,19 @@ public class UsuarioBean {
 	 */
 	public void leer(Usuario u) {
 		usuario = u;
-		rolId = u.getRol().getId();
+	}
+	
+	/*
+	 * Devuelve un String con los nombres de los roles
+	 * 
+	 */
+	public String nombreRoles() {
+		List<Rol> nombreRoles = usuario.getRoles();
+		String roles = "";
+		for(Rol r: nombreRoles) {
+			roles += r.getNombre() + " ";
+		}
+		return roles;
 	}
 
 }

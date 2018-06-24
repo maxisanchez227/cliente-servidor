@@ -70,8 +70,8 @@
 				<h:outputText value="#{u.password}" />
 			</p:column>
 			
-			<p:column headerText="Rol" width="110">
-				<h:outputText value="#{u.rol.nombre}" />
+			<p:column headerText="Roles" width="110">
+				<h:outputText value="#{u.roles}" />
 			</p:column>
 			
 			<p:column headerText=" " width="20" toggleable="false">
@@ -115,10 +115,9 @@
 				<p:outputLabel for="password" value="Contraseña"/>
 				<p:inputText id="password" value="#{usuarioBean.usuario.password}" />
 				<p:outputLabel for="rol" value="Rol"/>
-				<p:selectOneMenu id="rol" value="#{usuarioBean.rolId}">
-					<f:selectItem itemLabel="- Seleccione -" />
+				<p:selectManyCheckbox id="rol" value="#{usuarioBean.rolesId}" layout="grid" columns="1">
 					<f:selectItems value="#{usuarioBean.getRoles()}" var="r" itemValue="#{r.id}" itemLabel="#{r.nombre}" />
-				</p:selectOneMenu>
+				</p:selectManyCheckbox>
 				<br/>
 				<p:commandButton value="Modificar" icon="ui-icon-check" action="#{usuarioBean.updateUsuario}" onclick="PF('widgetdialog').hide();" update="frmUsuarios"/>
 			</h:panelGrid>

@@ -46,10 +46,9 @@
 				<p:inputText id="password" value="#{usuarioBean.usuario.password}" required="true" requiredMessage="El campo no puede estar vacío"/>
 				<p:message for="password"/>
 				<p:outputLabel for="rol" value="Rol"/>
-				<p:selectOneMenu id="rol" value="#{usuarioBean.rolId}" required="true" requiredMessage="El campo no puede estar vacío">
-					<f:selectItem itemLabel="- Seleccione -" />
+				<p:selectManyCheckbox id="rol" value="#{usuarioBean.rolesId}" layout="grid" columns="1" required="true" requiredMessage="Debe elegir al menos un rol">
 					<f:selectItems value="#{usuarioBean.getRoles()}" var="r" itemValue="#{r.id}" itemLabel="#{r.nombre}" />
-				</p:selectOneMenu>		
+				</p:selectManyCheckbox>		
 				<p:message for="rol"/>		
 				<p:commandButton icon="ui-icon-check" actionListener="#{usuarioBean.createUsuario()}" value="Guardar" action="usuarios.xhtml?faces-redirect=true" update="grid"/>
 				<p:button icon="ui-icon-close" value="Cancelar" outcome="usuarios.xhtml?faces-redirect=true"/>

@@ -120,6 +120,8 @@
 					<p><b>Cantidad de paquetes disponibles:</b> #{paqueteBean.paquete.cantidadDisponible}</p>
 					<p><b>Precio del paquete:</b> \$ #{paqueteBean.paquete.precio}</p>
 					<p:separator/>
+					<p><b>Actividades incluidas con el paquete:</b></p>
+					<p:separator/>
 					<p><b>Pasaje incluido con el paquete:</b></p>
 					<p>Desde: #{paqueteBean.paquete.getPasaje().getOrigen()} &nbsp;&nbsp; Hasta: #{paqueteBean.paquete.getPasaje().getDestino()}</p>
 					<p>Sale el #{paqueteBean.paquete.getPasaje().getFechaPartida()} y vuelve el #{paqueteBean.paquete.getPasaje().getFechaRegreso()}</p>

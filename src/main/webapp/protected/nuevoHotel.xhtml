@@ -34,6 +34,10 @@
 				<p:inputText id="precio" value="#{hotelBean.hotel.precioPorPersona}" required="true" requiredMessage="Este campo no puede estar vacío"/>
 				<p:message for="precio"/>
 				
+				<p:outputLabel for="estrellas" value="Estrellas"/>
+				<p:rating id="estrellas" value="#{hotelBean.hotel.estrellas}" required="true" requiredMessage="Seleccione una clasificación"/>
+				<p:message for="estrellas"/>
+				
 				<p:commandButton icon="ui-icon-check" actionListener="#{hotelBean.createHotel()}" value="Guardar" action="hoteles.xhtml?faces-redirect=true" update="grid"/>
 				<p:button icon="ui-icon-close" value="Cancelar" outcome="hoteles.xhtml?faces-redirect=true"/>
 			</h:panelGrid>

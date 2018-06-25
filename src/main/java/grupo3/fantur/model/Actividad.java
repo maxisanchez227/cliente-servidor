@@ -1,12 +1,15 @@
 package grupo3.fantur.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -37,6 +40,9 @@ public class Actividad {
 	@NotNull
 	@Column(name = "descripcion", nullable = false)
 	private String descripcion;
+
+	@ManyToMany(mappedBy = "actividades")
+	private List<Paquete> paquetes = new ArrayList<Paquete>();
 
 	// CONSTRUCTORES
 
@@ -84,6 +90,19 @@ public class Actividad {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public List<Paquete> getPaquetes() {
+		return paquetes;
+	}
+
+	public void setPaquetes(List<Paquete> paquetes) {
+		this.paquetes = paquetes;
+	}
+
+	@Override
+	public String toString() {
+		return nombre;
 	}
 
 }

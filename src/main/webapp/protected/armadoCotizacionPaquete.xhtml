@@ -85,7 +85,7 @@
 						<p:outputLabel for="actividades" value="Actividades"/>
 						<p:outputLabel/>
 						<p:outputLabel/>
-						<p:selectManyCheckbox id="actividades" value="#{paqueteBean.actividadesDelPaquete}" layout="grid" columns="3">
+						<p:selectManyCheckbox id="actividades" value="#{paqueteBean.actividadesId}" layout="grid" columns="3">
 							<f:selectItems value="#{paqueteBean.getActividades()}" var="act" itemValue="#{act.id}" itemLabel="#{act.nombre}" />
 						</p:selectManyCheckbox>	
 						
@@ -122,6 +122,11 @@
 					<p><b>Precio del paquete:</b> \$ #{paqueteBean.paquete.precio}</p>
 					<p:separator/>
 					<p><b>Actividades incluidas con el paquete:</b></p>
+					<h:form>
+						<p:dataList value="#{paqueteBean.mostrarActividades()}" var="a" type="ordered">
+							#{a.nombre}
+						</p:dataList>
+					</h:form>
 					<p:separator/>
 					<p><b>Pasaje incluido con el paquete:</b></p>
 					<p>Desde: #{paqueteBean.paquete.getPasaje().getOrigen()} &nbsp;&nbsp; Hasta: #{paqueteBean.paquete.getPasaje().getDestino()}</p>

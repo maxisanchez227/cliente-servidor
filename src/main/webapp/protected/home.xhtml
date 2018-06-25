@@ -71,7 +71,8 @@
 					<span style="font-size: 0.8em;">A: <b>#{p.pasaje.destino}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					#{p.cantidadPersonas} Persona(s)</span>
 					<br/>
-					<p:rating />#{p.hotel.nombre}
+					<p:rating value="#{p.hotel.estrellas}" readonly="true" />
+					#{p.hotel.nombre}
 					<br/>
 					<span style="font-size: 0.7em; margin-right: 2px">desde:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 																			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

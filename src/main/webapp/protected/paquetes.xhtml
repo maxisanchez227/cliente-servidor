@@ -70,8 +70,8 @@
 				<h:outputText value="#{p.hotel.id}" />
 			</p:column>
 			
-			<p:column headerText="Id_A" width="35">
-				<h:outputText value="#{p.actividad.id}" />
+			<p:column headerText="Actividades" width="120">
+				<h:outputText value="#{p.actividades}" />
 			</p:column>
 			
 			<p:column headerText=" " width="20" toggleable="false">
@@ -115,9 +115,7 @@
 		<p>Hotel: #{paqueteBean.paquete.getHotel().getNombre()}</p>
 		<p>Locación: #{paqueteBean.paquete.getHotel().getDireccion()}</p>
 		<p:separator/>
-		<p><b>Actividad incluida en el paquete:</b> #{paqueteBean.paquete.getActividad().getNombre()}</p>
-		<p>#{paqueteBean.paquete.getActividad().getDescripcion()}</p>
-		<p>Fecha de la actividad: #{paqueteBean.paquete.getActividad().getFechaActividad()}</p>
+		
 	</p:dialog>
 	
 	<!-- widget editar paquete -->
@@ -152,11 +150,7 @@
 					<f:selectItems value="#{paqueteBean.getHoteles()}" var="hot" itemValue="#{hot.id}" itemLabel="#{hot.id}" />
 				</p:selectOneMenu>
 				
-				<p:outputLabel for="actividad" value="Id_A"/>
-				<p:selectOneMenu id="actividad" value="#{paqueteBean.actividadId}">
-					<f:selectItem itemLabel="- Seleccione -" />
-					<f:selectItems value="#{paqueteBean.getActividades()}" var="act" itemValue="#{act.id}" itemLabel="#{act.id}" />
-				</p:selectOneMenu>
+			
 				
 				<br/>
 				<p:commandButton value="Modificar" icon="ui-icon-check" action="#{paqueteBean.updatePaquete}" onclick="PF('widgetdialog').hide();" update="frmPaquetes"/>

@@ -35,6 +35,9 @@ public class Hotel {
 	@Column(name = "precio_x_persona", nullable = false)
 	private float precioPorPersona;
 
+	@Column(name = "estrellas")
+	private Integer estrellas;
+
 	// CONSTRUCTORES
 
 	public Hotel() {
@@ -73,6 +76,14 @@ public class Hotel {
 
 	public void setPrecioPorPersona(float precioPorPersona) {
 		this.precioPorPersona = precioPorPersona;
+	}
+
+	public Integer getEstrellas() {
+		return estrellas;
+	}
+
+	public void setEstrellas(Integer estrellas) {
+		this.estrellas = estrellas;
 	}
 
 }

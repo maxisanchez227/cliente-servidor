@@ -1,5 +1,6 @@
 package grupo3.fantur.jsf;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,12 +10,10 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
 import grupo3.fantur.dao.ActividadDao;
-import grupo3.fantur.dao.ActividadesPorPaqueteDao;
 import grupo3.fantur.dao.HotelDao;
 import grupo3.fantur.dao.PaqueteDao;
 import grupo3.fantur.dao.PasajeDao;
 import grupo3.fantur.model.Actividad;
-import grupo3.fantur.model.ActividadesPorPaquete;
 import grupo3.fantur.model.Hotel;
 import grupo3.fantur.model.Paquete;
 import grupo3.fantur.model.Pasaje;
@@ -29,8 +28,7 @@ public class PaqueteBean {
 	private List<Actividad> actividades;
 	private long pasajeId;
 	private long hotelId;
-//	private long actividadId;
-	private List<String> actividadesDelPaquete;
+	private List<String> actividadesId;
 	private float subtotal;
 	private int porcentaje;
 
@@ -70,20 +68,12 @@ public class PaqueteBean {
 		this.hotelId = hotelId;
 	}
 
-//	public long getActividadId() {
-//		return actividadId;
-//	}
-//
-//	public void setActividadId(long actividadId) {
-//		this.actividadId = actividadId;
-//	}
-
-	public List<String> getActividadesDelPaquete() {
-		return actividadesDelPaquete;
+	public List<String> getActividadesId() {
+		return actividadesId;
 	}
 
-	public void setActividadesDelPaquete(List<String> actividadesDelPaquete) {
-		this.actividadesDelPaquete = actividadesDelPaquete;
+	public void setActividadesId(List<String> actividadesId) {
+		this.actividadesId = actividadesId;
 	}
 
 	public float getSubtotal() {
@@ -113,10 +103,6 @@ public class PaqueteBean {
 
 	@Inject
 	ActividadDao actividadDao;
-	
-	@Inject
-	ActividadesPorPaqueteDao actividadesPorPaqueteDao;
-	
 
 	@PostConstruct
 	public void init() {
@@ -132,26 +118,12 @@ public class PaqueteBean {
 		Hotel hotel = hotelDao.findById(hotelId);
 		paquete.setPasaje(pasaje);
 		paquete.setHotel(hotel);
+		for(String actividadId: actividadesId) {
+			long id = Long.parseLong(actividadId);
+			Actividad actividad = actividadDao.findById(id);
+			paquete.getActividades().add(actividad);
+		}
 		paqueteDao.create(paquete);
-		
-		// recorro lista actividadesDelPaquete proveniente del checkbox
-		for(String a: actividadesDelPaquete) {
-			
-			long id = Long.parseLong(a);
-			
-			// creo una fila de la tabla actividadPorPaquete
-			ActividadesPorPaquete actPaq = new ActividadesPorPaquete();
-			
-			// le asigno el paquete
-			actPaq.setPaquete(paquete);
-			
-			// busco la actividad y se la asigno
-			Actividad act = actividadDao.findById(id);
-			actPaq.setActividad(act);
-			
-			// persisto la actividadPorPaquete
-			actividadesPorPaqueteDao.create(actPaq);
-		}		
 	}
 
 	// BAJA
@@ -163,6 +135,12 @@ public class PaqueteBean {
 	public void updatePaquete() {
 		Pasaje pasaje = pasajeDao.findById(pasajeId);
 		Hotel hotel = hotelDao.findById(hotelId);
+		paquete.getActividades().clear();
+		for(String actividadId: actividadesId) {
+			long id = Long.parseLong(actividadId);
+			Actividad actividad = actividadDao.findById(id);
+			paquete.getActividades().add(actividad);
+		}
 		paquete.setPasaje(pasaje);
 		paquete.setHotel(hotel);
 		paqueteDao.update(paquete);
@@ -185,14 +163,18 @@ public class PaqueteBean {
 		pasajeId = p.getPasaje().getId();
 		hotelId = p.getHotel().getId();
 	}
-
+	
 	// OTROS METODOS
 
 	public float actualizarSubtotal() {
 		Pasaje pasaje = pasajeDao.findById(pasajeId);
 		Hotel hotel = hotelDao.findById(hotelId);
-		//Actividad actividad = actividadDao.findById(actividadId);
 		float subtotalActividades = 0;
+		for(String actividadId: actividadesId) {
+			long id = Long.parseLong(actividadId);
+			Actividad actividad = actividadDao.findById(id);
+			subtotalActividades += actividad.getPrecioPorPersona();
+		}
 		paquete.setPasaje(pasaje);
 		paquete.setHotel(hotel);
 
@@ -204,7 +186,7 @@ public class PaqueteBean {
 		int days = (int) (f2 - f1);
 
 		subtotal = (paquete.getCantidadPersonas() * hotel.getPrecioPorPersona() * days)
-				+ (paquete.getCantidadPersonas() * subtotalActividades)//actividad.getPrecioPorPersona())
+				+ (paquete.getCantidadPersonas() * subtotalActividades)
 				+ (paquete.getCantidadPersonas() * pasaje.getPrecioPasaje());
 
 		paquete.setPrecio(subtotal);
@@ -214,6 +196,16 @@ public class PaqueteBean {
 
 	public void aplicarPorcentaje() {
 		paquete.setPrecio(subtotal + ((porcentaje * subtotal) / 100));
+	}
+	
+	public List<Actividad> mostrarActividades(){
+		List<Actividad> temp = new ArrayList<Actividad>();
+		for(String actividadId: actividadesId) {
+			long id = Long.parseLong(actividadId);
+			Actividad actividad = actividadDao.findById(id);
+			temp.add(actividad);
+		}
+		return temp;
 	}
 
 }

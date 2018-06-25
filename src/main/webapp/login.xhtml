@@ -28,7 +28,7 @@
 				<p:inputText id="usuario" value="#{usuarioBean.usuario.username}" required="true" />
 				
 				<p:outputLabel for="password" value="Contraseña" />
-				<p:inputText id="password" value="#{usuarioBean.usuario.password}" required="true" />
+				<p:password id="password" value="#{usuarioBean.usuario.password}" required="true" />
 				
 				<h:column/>
 				<p:commandButton value="Iniciar Sesión" action="#{usuarioBean.iniciarSesion()}" icon="ui-icon-key" update="login-grid"/>

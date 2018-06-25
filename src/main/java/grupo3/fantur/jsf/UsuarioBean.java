@@ -3,8 +3,10 @@ package grupo3.fantur.jsf;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import grupo3.fantur.dao.RolDao;
@@ -19,7 +21,7 @@ public class UsuarioBean {
 	private Usuario usuario;
 	private List<Rol> roles;
 	private List<String> rolesId;
-	
+
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -91,16 +93,55 @@ public class UsuarioBean {
 	}
 	
 	/*
-	 * Devuelve un String con los nombres de los roles
+	 * esAdmin // esCliente
 	 * 
 	 */
-	public String nombreRoles() {
-		List<Rol> nombreRoles = usuario.getRoles();
-		String roles = "";
-		for(Rol r: nombreRoles) {
-			roles += r.getNombre() + " ";
+	public static boolean esAdmin(Usuario u) {
+		boolean admin = false;
+		List<Rol> roles = u.getRoles();
+		for(Rol r: roles) {
+			if(r.getNombre().equals("Administrador")) {
+				admin = true;
+			}
 		}
-		return roles;
+		return admin;
+	}
+	
+	public static boolean esCliente(Usuario u) {
+		boolean cliente = false;
+		List<Rol> roles = u.getRoles();
+		for(Rol r: roles) {
+			if(r.getNombre().equals("Cliente")) {
+				cliente = true;
+			}
+		}
+		return cliente;
+	}
+	
+	/*
+	 * Inicia sesion con el usuario si existe
+	 * 
+	 */
+	public String iniciarSesion(){
+		Usuario u;
+		String redireccion = null;
+		try{
+			u = usuarioDao.iniciarSesion(usuario);
+			// Almacenar en la sesion de JSF --> put(alias,objeto)
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", u);
+			if(u!=null){
+				if(esAdmin(u)) {
+					redireccion = "protected/home.xhtml?faces-redirect=true";									
+				} else {
+					redireccion = "home.xhtml?faces-redirect=true;";
+				}
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", "Cuenta inexistente o contraseña incorrecta"));
+			}
+		}catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Aviso", "Error"));
+		}
+		return redireccion;
 	}
 
 }

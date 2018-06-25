@@ -18,5 +18,7 @@ public interface UsuarioDao {
 	void delete(Usuario usuario);
 
 	List<Usuario> findAll();
+	
+	Usuario iniciarSesion(Usuario usuario);
 
 }

@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Login</title>
+	<style>
+		
+		#principal {
+			width: 20%;
+			margin: 0 auto;
+			margin-top: 15%;
+		}
+		
+	</style>
+</h:head>
+<body>
+
+	<h:form id="principal">
+		<p:messages autoUpdate="true" showDetail="true"/>
+		<p:panel header="Login">
+			<h:panelGrid columns="2" id="login-grid">
+	
+				<p:outputLabel for="usuario" value="Usuario" />
+				<p:inputText id="usuario" value="#{usuarioBean.usuario.username}" required="true" />
+				
+				<p:outputLabel for="password" value="Contraseña" />
+				<p:inputText id="password" value="#{usuarioBean.usuario.password}" required="true" />
+				
+				<h:column/>
+				<p:commandButton value="Iniciar Sesión" action="#{usuarioBean.iniciarSesion()}" icon="ui-icon-key" update="login-grid"/>
+	
+			</h:panelGrid>		
+		</p:panel>
+		
+		<p:separator/>
+		<div style="text-align: center;">
+			<p:link id="link" value="Crear cuenta" outcome="registro.xhtml" />
+		</div>
+
+	</h:form>
+
+</body>
+</html>

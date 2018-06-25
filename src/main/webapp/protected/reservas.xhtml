@@ -7,6 +7,7 @@
 
 <h:head>
 	<title>Listado Reservas</title>
+	<f:event listener="#{sesionBean.verificarSesionAdmin}" type="preRenderView"/>
 	<style>
 		.ui-datatable .ui-datatable-header, .ui-datatable .ui-datatable-footer {
     		text-align: right;

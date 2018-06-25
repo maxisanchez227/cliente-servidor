@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -172,14 +171,6 @@ public class Usuario {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	// public Rol getRol() {
-	// return rol;
-	// }
-	//
-	// public void setRol(Rol rol) {
-	// this.rol = rol;
-	// }
 
 	public List<Rol> getRoles() {
 		return roles;

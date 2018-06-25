@@ -7,7 +7,7 @@
 
 <h:head>
 	<title>FANTUR</title>
-	<f:event listener="#{sesionBean.verificarSesionCliente}" type="preRenderView"/>
+	<f:event listener="#{sesionBean.verificarSesionAdmin}" type="preRenderView"/>
 	<style>
 		
 		.header {
@@ -22,26 +22,43 @@
 		<h:form>
 			<p:menubar id="menubar">
 				
-				<p:submenu label="Mis Reservas">
-					<p:menuitem value="Reservas realizadas" action="misReservas.xhtml?faces-redirect=true" />
+				<p:submenu label="Usuarios">
+					<p:menuitem value="Usuarios Registrados" action="usuarios.xhtml?faces-redirect=true" />
+					<p:menuitem value="Roles" action="roles.hxtml?faces-redirect=true"/>
 				</p:submenu>
 				
-				<p:submenu label="Mis Pagos">
-					<p:menuitem value="Pagos realizados" action="misPagos.xhtml?faces-redirect=true" />
+				<p:submenu label="Paquetes">
+					<p:menuitem value="Paquetes Registrados" action="paquetes.xhtml?faces-redirect=true" />
+					<p:menuitem value="Pasajes" action="pasajes.hxtml?faces-redirect=true"/>
+					<p:menuitem value="Hoteles" action="hoteles.hxtml?faces-redirect=true"/>
+					<p:menuitem value="Actividades" action="actividades.hxtml?faces-redirect=true"/>
 				</p:submenu>
 				
-				<p:submenu label="Perfil">
-					<p:menuitem value="Configuración de la cuenta" action="configuracion.xhtml?faces-redirect=true" />
+				<p:submenu label="Reservas">
+					<p:menuitem value="Reservas Registradas" action="reservas.xhtml?faces-redirect=true" />
 				</p:submenu>
 				
+				<p:submenu label="Pagos">
+					<p:menuitem value="Pagos Registradas" action="pagos.xhtml?faces-redirect=true" />
+					<p:menuitem value="Medios de Pago" action="mediosDePago.xhtml?faces-redirect=true" />
+				</p:submenu>
+				
+				<p:submenu label="Mensajería">
+					<p:menuitem value="Nuevo Mensaje" action="nuevoMensaje.xhtml?faces-redirect=true" />
+				</p:submenu>
+			
 				<f:facet name="options">
-	            	<p:commandButton actionListener="#{sesionBean.cerrarSesionCliente}" value="Cerrar Sesión" icon="ui-icon-power" />
+	            	<p:commandButton actionListener="#{sesionBean.cerrarSesionAdmin}" value="Cerrar Sesión" icon="ui-icon-power" />
 	        	</f:facet>
 			</p:menubar>
 		</h:form>
 	</div>
 	
 	<div class="dashboard">
+		
+		<div style="background-color: rgb(204, 238, 255); border: 1px solid #4dc4ff; padding: 2px;">
+	  		<p:button value="Nuevo Paquete" outcome="armadoCotizacionPaquete.xhtml" icon="ui-icon-plus" />
+		</div>
 		
 		<h:form>
 			<p:dataGrid value="#{paqueteBean.listaPaquetes()}" var="p" columns="4" layout="grid"

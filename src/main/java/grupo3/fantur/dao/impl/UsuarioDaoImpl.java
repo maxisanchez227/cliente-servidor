@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -50,6 +51,29 @@ public class UsuarioDaoImpl implements UsuarioDao {
 		TypedQuery<Usuario> query = em.createQuery(q);
 
 		return query.getResultList();
+	}
+	
+	/*
+	 * Recupera usuario a partir de usuario y contrasenia ingresados
+	 * 
+	 */
+	@Override
+	public Usuario iniciarSesion(Usuario usuario) {
+		Usuario u = null;
+		String sql;
+		try {
+			sql = "FROM Usuario u WHERE u.username=?1 AND u.password=?2";
+			Query query = em.createQuery(sql);
+			query.setParameter(1, usuario.getUsername());
+			query.setParameter(2, usuario.getPassword());
+			List<Usuario> usuariosRegistrados = query.getResultList();
+			if(!usuariosRegistrados.isEmpty()) {
+				u = usuariosRegistrados.get(0);
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return u;
 	}
 
 }

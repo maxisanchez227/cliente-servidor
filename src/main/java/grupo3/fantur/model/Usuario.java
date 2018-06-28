@@ -25,6 +25,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @SuppressWarnings("deprecation")
 @Entity
 @Table(name = "USUARIO")
@@ -77,11 +79,6 @@ public class Usuario {
 	@NotNull
 	@Column(name = "password", nullable = false)
 	private String password;
-
-	// @NotNull
-	// @ManyToOne
-	// @JoinColumn(name = "id_rol", nullable = false)
-	// private Rol rol;
 
 	@NotNull
 	@ManyToMany(fetch = FetchType.EAGER)

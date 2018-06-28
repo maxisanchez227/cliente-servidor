@@ -15,6 +15,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "ACTIVIDAD")
 public class Actividad {
@@ -41,6 +43,7 @@ public class Actividad {
 	@Column(name = "descripcion", nullable = false)
 	private String descripcion;
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "actividades")
 	private List<Paquete> paquetes = new ArrayList<Paquete>();
 

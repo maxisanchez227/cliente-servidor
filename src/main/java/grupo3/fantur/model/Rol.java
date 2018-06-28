@@ -3,6 +3,7 @@ package grupo3.fantur.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jms.JMSSessionMode;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "ROL")
@@ -29,6 +32,7 @@ public class Rol {
 	@Column(name = "nombre_rol", nullable = false)
 	private String nombre;
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "roles")
 	private List<Usuario> usuarios = new ArrayList<Usuario>();
 

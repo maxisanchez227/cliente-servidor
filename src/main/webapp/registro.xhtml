@@ -1,11 +1,79 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"> 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
 
-<h:head></h:head> 
-<body> 
+<h:head>
+	<title>Registro</title>
+	<style>
+		
+		#principal {
+			width: 37%;
+			margin: 0 auto;
+			margin-top: 10%;
+		}
+		
+	</style>
+</h:head>
+<body>
 
-</body> 
+	<h:form id="principal">
+	
+		<p:panel header="Crear Cuenta">
+					
+			<h:panelGrid id="grid" columns="3">
+			
+				<p:outputLabel for="nombre" value="Nombre"/>
+				<p:inputText id="nombre" value="#{usuarioBean.usuario.nombre}" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="nombre"/>
+
+				<p:outputLabel for="apellido" value="Apellido"/>
+				<p:inputText id="apellido" value="#{usuarioBean.usuario.apellido}" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="apellido"/>
+
+				<p:outputLabel for="dni" value="DNI"/>
+				<p:inputText id="dni" value="#{usuarioBean.usuario.dni}" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="dni"/>
+				<p:outputLabel for="fechaNac" value="Fecha Nac."/>
+				<p:calendar id="fechaNac" value="#{usuarioBean.usuario.fechaNac}" pattern="dd/mm/yyyy" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="fechaNac"/>
+				
+				<p:outputLabel for="direccion" value="Dirección"/>
+				<p:inputText id="direccion" value="#{usuarioBean.usuario.direccion}" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="direccion"/>
+			
+				<p:outputLabel for="email" value="E-Mail"/>
+				<p:inputText id="email" value="#{usuarioBean.usuario.email}" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="email"/>
+				
+				<p:outputLabel for="username" value="Nombre Usuario"/>
+				<p:inputText id="username" value="#{usuarioBean.usuario.username}" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="username"/>
+				
+				<p:outputLabel for="password1" value="Contraseña"/>
+				<p:password id="password1" value="#{usuarioBean.usuario.password}" required="true" requiredMessage="El campo no puede estar vacío"
+							match="password2" validatorMessage="Las contraseñas no coinciden" weakLabel="Débil" goodLabel="Buena" strongLabel="Fuerte"
+							feedback="true" promptLabel="Ingrese una contraseña"/>
+				<p:message for="password1"/>
+			
+				<p:outputLabel for="password2" value="Repetir Contraseña"/>
+				<p:password id="password2" required="true" requiredMessage="El campo no puede estar vacío"/>
+				<p:message for="password2"/>
+				
+			</h:panelGrid>
+			<p:separator/>
+			<div style="text-align: center;">
+				<p:commandButton icon="ui-icon-check" actionListener="#{usuarioBean.registrar()}" value="Registrar" action="login.xhtml?faces-redirect=true" 
+								update="grid" style="padding-left: 20px; padding-right: 20px;"/>
+				<p:button icon="ui-icon-close" value="Cancelar" outcome="login.xhtml?faces-redirect=true" style="padding-left: 20px; padding-right: 20px;"/>
+			</div>
+	
+			
+		</p:panel>
+			
+	</h:form>
+
+</body>
 </html>

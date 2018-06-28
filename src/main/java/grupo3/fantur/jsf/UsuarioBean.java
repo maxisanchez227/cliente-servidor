@@ -59,6 +59,18 @@ public class UsuarioBean {
 		}
 		usuarioDao.create(usuario);
 	}
+	
+	public void registrar() {
+		Rol rol = null;
+		List<Rol> roles = rolDao.findAll();
+		for(Rol r: roles) {
+			if(r.getNombre().equals("Cliente")) {
+				rol = r;
+			}
+		}
+		usuario.getRoles().add(rol);
+		usuarioDao.create(usuario);
+	}
 
 	// BAJA
 	public void deleteUsuario(Usuario usuario) {

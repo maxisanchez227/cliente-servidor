@@ -20,6 +20,7 @@
 
 	<div class="header">
 		<h:form>
+			<p:growl id="growl" autoUpdate="true" showSummary="true" showDetail="true" />
 			<p:menubar id="menubar">
 				
 				<p:submenu label="Mis Reservas">
@@ -35,6 +36,8 @@
 				</p:submenu>
 				
 				<f:facet name="options">
+					<p:outputLabel value="Bienvenido: #{sesionBean.logueado().email}" />
+					&nbsp;&nbsp;&nbsp;
 	            	<p:commandButton actionListener="#{sesionBean.cerrarSesionCliente}" value="Cerrar Sesión" icon="ui-icon-power" />
 	        	</f:facet>
 			</p:menubar>
@@ -43,7 +46,7 @@
 	
 	<div class="dashboard">
 		
-		<h:form>
+		<h:form id="frmPaquetes">
 			<p:dataGrid value="#{paqueteBean.listaPaquetes()}" var="p" columns="4" layout="grid"
 				paginator="true" rows="8" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} 
 				{PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="4,8,12,16">
@@ -65,12 +68,44 @@
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<span style="font-size: 0.8em;">#{p.pasaje.fechaRegreso}</span>
 					<br/>
-					<p:link value="Ver detalle" style="float: right; color: blue;"></p:link>
+					
+					<p:commandLink title="Detalles" actionListener="#{paqueteBean.leer(p)}" oncomplete="PF('widgetdetail').show();" update="detaildialog">
+						<h:outputText value="Ver detalle" style="float: right; color: blue;"/>
+					</p:commandLink>
+					
 					<br/>
 				</p:panel>	
 				
 			</p:dataGrid>
 		</h:form>
+		
+		<!-- widget detalle paquete -->
+		<p:dialog id="detaildialog" widgetVar="widgetdetail" header="Detalle '#{paqueteBean.paquete.nombre}'" modal="true" resizable="false" closeOnEscape="true" draggable="false">
+			<p>#{paqueteBean.paquete.descripcion}</p>
+			<p><b>Cantidad de Personas:</b> #{paqueteBean.paquete.cantidadPersonas} &nbsp; <b>Precio del paquete:</b> \$ #{paqueteBean.paquete.precio}</p>
+			<p><b>Cantidad de paquetes disponibles:</b> #{paqueteBean.paquete.cantidadDisponible}</p>
+			<p:separator/>
+			<p><b>Pasaje incluido con el paquete:</b></p>
+			<p>Desde: #{paqueteBean.paquete.getPasaje().getOrigen()} &nbsp;&nbsp; hasta: #{paqueteBean.paquete.getPasaje().getDestino()}</p>
+			<p>Sale el #{paqueteBean.paquete.getPasaje().getFechaPartida()} y vuelve el #{paqueteBean.paquete.getPasaje().getFechaRegreso()}</p>
+			<p>Medio de transporte: #{paqueteBean.paquete.getPasaje().getMedioTransporte()}</p>
+			<p:separator/>
+			<p><b>Estadía incluida con el paquete:</b></p>
+			<p>Hotel: #{paqueteBean.paquete.getHotel().getNombre()}</p>
+			<p>Locación: #{paqueteBean.paquete.getHotel().getDireccion()}</p>
+			<p:separator/>
+			<p><b>Actividades incluidas con el paquete:</b></p>
+					<h:form>
+						<p:dataList value="#{paqueteBean.paquete.getActividades()}" var="a" type="ordered" emptyMessage="Este paquete no incluye actividades.">
+							#{a.nombre}
+						</p:dataList>
+					</h:form>
+			<p:separator/>
+			<div align="center">
+				<p:commandButton value="Reservar" icon="ui-icon-check" actionListener="#{reservaBean.reservar(paqueteBean.paquete)}" 
+								onclick="PF('widgetdetail').hide();" action="home.xhtml?faces-redirect=true" />			
+			</div>
+		</p:dialog>
 		
 	</div>
 	

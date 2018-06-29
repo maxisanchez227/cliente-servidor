@@ -1,11 +1,67 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"> 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
 
-<h:head></h:head> 
-<body> 
+<h:head>
+	<title>Mis Reservas</title>
+	<f:event listener="#{sesionBean.verificarSesionCliente}" type="preRenderView"/>
+</h:head>
+<body>
 
-</body> 
+	<p:breadCrumb>
+		<p:menuitem value="Home" url="home.xhtml" />
+		<p:menuitem value="Mis Reservas" url="misReservas.xhtml" />
+	</p:breadCrumb>
+	
+	<br/>
+	
+	<div class="dashboard">
+		
+		<h:form>
+			<p:dataTable value="#{reservaBean.listaMisReservas()}" var="r" stickyHeader="true" emptyMessage="No ha realizado reservas.">
+			
+				<f:facet name="header">
+					<h:outputText value="Mis Reservas"/>
+				</f:facet>
+			
+				<p:column headerText="Fecha Reserva" width="120">
+					<h:outputText value="#{r.fechaReserva}"/>
+				</p:column>
+				
+				<p:column headerText="Paquete">
+					<h:outputText value="#{r.paquete.nombre}"/>
+				</p:column>
+			
+				<p:column headerText="Estado" width="120">
+					<h:outputText value="#{r.estado}" />
+				</p:column>
+				
+				<p:column headerText="Precio" width="120">
+					<h:outputText value="#{r.paquete.precio}">
+						<f:convertNumber type="currency" currencySymbol="$"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Fecha pago" width="120">
+					<h:outputText value="-"/>
+				</p:column>
+				
+				<p:column width="120">
+					<p:commandLink value="Realizar pago" style="color: blue;"/>
+				</p:column>
+				
+				<p:column width="120">
+					<p:commandLink value="Cancelar reserva" style="color: blue;"/>
+				</p:column>				
+			
+			</p:dataTable>
+		
+		</h:form>
+		
+	</div>
+	
+</body>
 </html>

@@ -48,6 +48,8 @@
 				</p:submenu>
 			
 				<f:facet name="options">
+					<p:outputLabel value="Bienvenido: #{sesionBean.logueado().email}" />
+					&nbsp;&nbsp;&nbsp;
 	            	<p:commandButton actionListener="#{sesionBean.cerrarSesionAdmin}" value="Cerrar Sesión" icon="ui-icon-power" />
 	        	</f:facet>
 			</p:menubar>

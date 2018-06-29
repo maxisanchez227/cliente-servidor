@@ -16,6 +16,14 @@ import grupo3.fantur.model.Usuario;
 public class SesionBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	/*
+	 * Devuelve el usuario logueado
+	 * 
+	 */
+	public Usuario logueado() {
+		return (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+	}
 
 	/*
 	 * esAdmin // esCliente

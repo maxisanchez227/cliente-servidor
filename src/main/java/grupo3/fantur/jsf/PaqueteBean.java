@@ -118,7 +118,7 @@ public class PaqueteBean {
 		Hotel hotel = hotelDao.findById(hotelId);
 		paquete.setPasaje(pasaje);
 		paquete.setHotel(hotel);
-		for(String actividadId: actividadesId) {
+		for (String actividadId : actividadesId) {
 			long id = Long.parseLong(actividadId);
 			Actividad actividad = actividadDao.findById(id);
 			paquete.getActividades().add(actividad);
@@ -136,7 +136,7 @@ public class PaqueteBean {
 		Pasaje pasaje = pasajeDao.findById(pasajeId);
 		Hotel hotel = hotelDao.findById(hotelId);
 		paquete.getActividades().clear();
-		for(String actividadId: actividadesId) {
+		for (String actividadId : actividadesId) {
 			long id = Long.parseLong(actividadId);
 			Actividad actividad = actividadDao.findById(id);
 			paquete.getActividades().add(actividad);
@@ -163,14 +163,14 @@ public class PaqueteBean {
 		pasajeId = p.getPasaje().getId();
 		hotelId = p.getHotel().getId();
 	}
-	
+
 	// OTROS METODOS
 
 	public float actualizarSubtotal() {
 		Pasaje pasaje = pasajeDao.findById(pasajeId);
 		Hotel hotel = hotelDao.findById(hotelId);
 		float subtotalActividades = 0;
-		for(String actividadId: actividadesId) {
+		for (String actividadId : actividadesId) {
 			long id = Long.parseLong(actividadId);
 			Actividad actividad = actividadDao.findById(id);
 			subtotalActividades += actividad.getPrecioPorPersona();
@@ -197,10 +197,10 @@ public class PaqueteBean {
 	public void aplicarPorcentaje() {
 		paquete.setPrecio(subtotal + ((porcentaje * subtotal) / 100));
 	}
-	
-	public List<Actividad> mostrarActividades(){
+
+	public List<Actividad> mostrarActividades() {
 		List<Actividad> temp = new ArrayList<Actividad>();
-		for(String actividadId: actividadesId) {
+		for (String actividadId : actividadesId) {
 			long id = Long.parseLong(actividadId);
 			Actividad actividad = actividadDao.findById(id);
 			temp.add(actividad);

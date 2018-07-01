@@ -5,42 +5,55 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.inject.Inject;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 
-import grupo3.fantur.dao.RolDao;
 import grupo3.fantur.model.Rol;
+import grupo3.fantur.ws.JAXRSClient;
 
 @ManagedBean
 @ViewScoped
-public class RolBean {
-
+public class RolBean extends JAXRSClient {
+	
 	private Rol rol;
 
 	public Rol getRol() {
 		return rol;
 	}
 
-	@Inject
-	RolDao rolDao;
-
 	@PostConstruct
 	private void init() {
 		rol = new Rol();
+		client = ClientBuilder.newClient();
+		webTarget = client.target(WS_ENDPOINT);
 	}
 
 	// ALTA
 	public void createRol() {
-		rolDao.create(rol);
+//		rolDao.create(rol);
+		WebTarget rolWebTarget = webTarget.path("/rol");
+		invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
+		invocationBuilder.post(Entity.entity(rol, MediaType.APPLICATION_JSON));
 	}
 
 	// BAJA
 	public void deleteRol(Rol rol) {
-		rolDao.delete(rol);
+//		rolDao.delete(rol);
+		String id = String.valueOf(rol.getId());
+		WebTarget rolWebTarget = webTarget.path("/rol").path(id);
+		invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
+		invocationBuilder.delete();
 	}
 
 	// MODIFICACION
 	public void updateRol() {
-		rolDao.update(rol);
+//		rolDao.update(rol);
+		WebTarget rolWebTarget = webTarget.path("/rol");
+		invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
+		invocationBuilder.put(Entity.entity(rol, MediaType.APPLICATION_JSON));
 	}
 
 	/*
@@ -48,7 +61,10 @@ public class RolBean {
 	 * 
 	 */
 	public List<Rol> listaRoles() {
-		return rolDao.findAll();
+		// return rolDao.findAll();
+		WebTarget rolWebTarget = webTarget.path("/rol");
+		invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
+		return invocationBuilder.get(new GenericType<List<Rol>>() {});
 	}
 
 	/*

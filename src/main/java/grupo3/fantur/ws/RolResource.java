@@ -42,11 +42,16 @@ public class RolResource {
 	public void addRol(Rol rol) {
 		rolDao.create(rol);
 	}
-
+	
+//	@PUT
+//	@Path("/{rolId}")
+//	public void updateRol(@PathParam("rolId") long id, Rol rol) {
+//		rol.setId(id);
+//		rolDao.update(rol);
+//	}
+	
 	@PUT
-	@Path("/{rolId}")
-	public void updateRol(@PathParam("rolId") long id, Rol rol) {
-		rol.setId(id);
+	public void updateRol(Rol rol) {
 		rolDao.update(rol);
 	}
 

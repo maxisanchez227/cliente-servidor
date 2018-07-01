@@ -1,10 +1,12 @@
 package grupo3.fantur.jsf;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import grupo3.fantur.dao.MedioDePagoDao;
@@ -13,6 +15,7 @@ import grupo3.fantur.dao.ReservaDao;
 import grupo3.fantur.model.MedioDePago;
 import grupo3.fantur.model.Pago;
 import grupo3.fantur.model.Reserva;
+import grupo3.fantur.model.Usuario;
 
 @ManagedBean
 @ViewScoped

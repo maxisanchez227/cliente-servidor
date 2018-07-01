@@ -10,6 +10,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 
 import grupo3.fantur.dao.PaqueteDao;
 import grupo3.fantur.dao.ReservaDao;
@@ -17,10 +20,11 @@ import grupo3.fantur.dao.UsuarioDao;
 import grupo3.fantur.model.Paquete;
 import grupo3.fantur.model.Reserva;
 import grupo3.fantur.model.Usuario;
+import grupo3.fantur.ws.JAXRSClient;
 
 @ManagedBean
 @ViewScoped
-public class ReservaBean {
+public class ReservaBean extends JAXRSClient {
 
 	private Reserva reserva;
 	private List<Usuario> usuarios;
@@ -55,7 +59,7 @@ public class ReservaBean {
 	public void setPaqueteId(long paqueteId) {
 		this.paqueteId = paqueteId;
 	}
-
+	
 	@Inject
 	ReservaDao reservaDao;
 
@@ -64,12 +68,15 @@ public class ReservaBean {
 
 	@Inject
 	PaqueteDao paqueteDao;
-
+	
 	@PostConstruct
 	public void init() {
 		reserva = new Reserva();
 		usuarios = usuarioDao.findAll();
 		paquetes = paqueteDao.findAll();
+		
+		client = ClientBuilder.newClient();
+		webTarget = client.target(WS_ENDPOINT);
 	}
 
 	// ALTA
@@ -83,19 +90,21 @@ public class ReservaBean {
 
 	public void reservar(Paquete paquete) {
 		FacesContext context = FacesContext.getCurrentInstance();
-		try {
+		WebTarget organismoWebTarget = webTarget.path("/organismo");
+		invocationBuilder = organismoWebTarget.request(MediaType.APPLICATION_JSON);
+		int n = invocationBuilder.get(Integer.class);
+		if (n < 50) {
 			reserva.setFechaReserva(new Date());
 			reserva.setEstado("Reservado");
 			reserva.setPaquete(paquete);
 			Usuario usuario = (Usuario) context.getExternalContext().getSessionMap().get("usuario");
 			reserva.setUsuario(usuario);
 			reservaDao.create(reserva);
-			context.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva realizada", "Reserva realizada con éxito"));
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva realizada", "Reserva realizada con éxito " + n));
 			context.getExternalContext().getFlash().setKeepMessages(true);
-		} catch (Exception e) {
-			context.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Actualice la página por favor"));
+		} else {
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Intente más tarde " + n));
+			context.getExternalContext().getFlash().setKeepMessages(true);
 		}
 	}
 

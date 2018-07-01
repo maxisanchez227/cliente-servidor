@@ -1,5 +1,6 @@
 package grupo3.fantur.jsf;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -8,15 +9,20 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 
 import grupo3.fantur.dao.RolDao;
 import grupo3.fantur.dao.UsuarioDao;
 import grupo3.fantur.model.Rol;
 import grupo3.fantur.model.Usuario;
+import grupo3.fantur.ws.JAXRSClient;
 
 @ManagedBean
 @ViewScoped
-public class UsuarioBean {
+public class UsuarioBean extends JAXRSClient {
 
 	private Usuario usuario;
 	private List<Rol> roles;
@@ -37,6 +43,8 @@ public class UsuarioBean {
 	public void setRolesId(List<String> rolesId) {
 		this.rolesId = rolesId;
 	}
+	
+	WebTarget usuarioWebTarget;
 
 	@Inject
 	UsuarioDao usuarioDao;
@@ -48,6 +56,9 @@ public class UsuarioBean {
 	public void init() {
 		usuario = new Usuario();
 		roles = rolDao.findAll();
+		client = ClientBuilder.newClient();
+		webTarget = client.target(WS_ENDPOINT);
+		usuarioWebTarget = webTarget.path("/usuario");
 	}
 
 	// ALTA
@@ -59,12 +70,12 @@ public class UsuarioBean {
 		}
 		usuarioDao.create(usuario);
 	}
-	
+
 	public void registrar() {
 		Rol rol = null;
 		List<Rol> roles = rolDao.findAll();
-		for(Rol r: roles) {
-			if(r.getNombre().equals("Cliente")) {
+		for (Rol r : roles) {
+			if (r.getNombre().equals("Cliente")) {
 				rol = r;
 			}
 		}
@@ -93,7 +104,9 @@ public class UsuarioBean {
 	 * 
 	 */
 	public List<Usuario> listaUsuarios() {
-		return usuarioDao.findAll();
+		// return usuarioDao.findAll();
+		invocationBuilder = usuarioWebTarget.request(MediaType.APPLICATION_JSON);
+		return invocationBuilder.get(new GenericType<List<Usuario>>() {});
 	}
 
 	/*
@@ -103,7 +116,7 @@ public class UsuarioBean {
 	public void leer(Usuario u) {
 		usuario = u;
 	}
-	
+
 	/*
 	 * esAdmin // esCliente
 	 * 
@@ -111,47 +124,49 @@ public class UsuarioBean {
 	public static boolean esAdmin(Usuario u) {
 		boolean admin = false;
 		List<Rol> roles = u.getRoles();
-		for(Rol r: roles) {
-			if(r.getNombre().equals("Administrador")) {
+		for (Rol r : roles) {
+			if (r.getNombre().equals("Administrador")) {
 				admin = true;
 			}
 		}
 		return admin;
 	}
-	
+
 	public static boolean esCliente(Usuario u) {
 		boolean cliente = false;
 		List<Rol> roles = u.getRoles();
-		for(Rol r: roles) {
-			if(r.getNombre().equals("Cliente")) {
+		for (Rol r : roles) {
+			if (r.getNombre().equals("Cliente")) {
 				cliente = true;
 			}
 		}
 		return cliente;
 	}
-	
+
 	/*
 	 * Inicia sesion con el usuario si existe
 	 * 
 	 */
-	public String iniciarSesion(){
+	public String iniciarSesion() {
 		Usuario u;
 		String redireccion = null;
-		try{
+		try {
 			u = usuarioDao.iniciarSesion(usuario);
 			// Almacenar en la sesion de JSF --> put(alias,objeto)
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", u);
-			if(u!=null){
-				if(esAdmin(u)) {
-					redireccion = "protected/home.xhtml?faces-redirect=true";									
+			if (u != null) {
+				if (esAdmin(u)) {
+					redireccion = "protected/home.xhtml?faces-redirect=true";
 				} else {
 					redireccion = "home.xhtml?faces-redirect=true;";
 				}
-			}else{
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", "Cuenta inexistente o contraseña incorrecta"));
+			} else {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso",
+						"Cuenta inexistente o contraseña incorrecta"));
 			}
-		}catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Aviso", "Error"));
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_FATAL, "Aviso", "Error"));
 		}
 		return redireccion;
 	}

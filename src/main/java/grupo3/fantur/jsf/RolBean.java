@@ -17,41 +17,43 @@ import grupo3.fantur.ws.JAXRSClient;
 @ManagedBean
 @ViewScoped
 public class RolBean extends JAXRSClient {
-	
+
 	private Rol rol;
 
 	public Rol getRol() {
 		return rol;
 	}
 
+	private WebTarget rolWebTarget;
+
 	@PostConstruct
 	private void init() {
 		rol = new Rol();
+		
 		client = ClientBuilder.newClient();
 		webTarget = client.target(WS_ENDPOINT);
+		rolWebTarget = webTarget.path("/rol");
 	}
 
 	// ALTA
 	public void createRol() {
-//		rolDao.create(rol);
-		WebTarget rolWebTarget = webTarget.path("/rol");
+		// rolDao.create(rol);
 		invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
 		invocationBuilder.post(Entity.entity(rol, MediaType.APPLICATION_JSON));
 	}
 
 	// BAJA
 	public void deleteRol(Rol rol) {
-//		rolDao.delete(rol);
+		// rolDao.delete(rol);
 		String id = String.valueOf(rol.getId());
-		WebTarget rolWebTarget = webTarget.path("/rol").path(id);
-		invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
+		WebTarget deleteRolWebTarget = rolWebTarget.path(id);
+		invocationBuilder = deleteRolWebTarget.request(MediaType.APPLICATION_JSON);
 		invocationBuilder.delete();
 	}
 
 	// MODIFICACION
 	public void updateRol() {
-//		rolDao.update(rol);
-		WebTarget rolWebTarget = webTarget.path("/rol");
+		// rolDao.update(rol);
 		invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
 		invocationBuilder.put(Entity.entity(rol, MediaType.APPLICATION_JSON));
 	}
@@ -62,7 +64,6 @@ public class RolBean extends JAXRSClient {
 	 */
 	public List<Rol> listaRoles() {
 		// return rolDao.findAll();
-		WebTarget rolWebTarget = webTarget.path("/rol");
 		invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
 		return invocationBuilder.get(new GenericType<List<Rol>>() {});
 	}

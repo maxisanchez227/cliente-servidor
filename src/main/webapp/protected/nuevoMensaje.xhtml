@@ -10,8 +10,44 @@
 	<f:event listener="#{sesionBean.verificarSesionAdmin}" type="preRenderView"/>
 </h:head>
 <body>
-
-	Enviar publicidad...
+	
+	<p:breadCrumb>
+		<p:menuitem value="Home" url="home.xhtml" />
+		<p:menuitem value="Mensajeria" url="nuevoMensaje.xhtml" />
+	</p:breadCrumb>
+	
+	<br/>
+	
+	<h:form id="frm">
+		<p:growl id="growl" autoUpdate="true" showSummary="true" showDetail="true" />
+		<p:fieldset>
+			<h:panelGrid columns="3">
+				
+				<p:outputLabel for="to" value="Para:"/>
+				<p:chips id="to" value="#{mensajeriaBean.mails}" required="false" requiredMessage="Ingrese al menos un mail"/>
+				<h:column/>
+				
+				<p:outputLabel for="todos" value="A todos:"/>
+				<p:selectBooleanCheckbox id="todos" value="#{mensajeriaBean.todos}"/>
+				<h:column/>
+				
+				<p:outputLabel for="asunto" value="Asunto:"/>
+				<p:inputText id="asunto" value="#{mensajeriaBean.asunto}" required="true" requiredMessage="Ingrese al menos un mail"/>
+				<p:message for="asunto"/>
+				
+				<p:outputLabel for="mensaje" value="Mensaje"/>
+				<p:inputTextarea id="mensaje" value="#{mensajeriaBean.mensaje}" required="true" requiredMessage="Este campo no puede estar vacío"
+								rows="5" cols="70" counter="display" maxlength="255" counterTemplate="Quedan {0} caracteres" autoResize="false"/>
+				<p:message for="mensaje"/>
+				<h:column/>
+				<h:outputText id="display" />
+				<h:column/>
+				
+				<p:commandButton id="btn" value="Enviar" actionListener="#{mensajeriaBean.enviarMsj()}"  update="frm"/>
+				
+			</h:panelGrid>
+		</p:fieldset>
+	</h:form>
 	
 </body>
 </html>

@@ -10,7 +10,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
@@ -24,7 +26,7 @@ import grupo3.fantur.ws.JAXRSClient;
 
 @ManagedBean
 @ViewScoped
-public class ReservaBean extends JAXRSClient {
+public class ReservaBean {
 
 	private Reserva reserva;
 	private List<Usuario> usuarios;
@@ -69,6 +71,9 @@ public class ReservaBean extends JAXRSClient {
 	@Inject
 	PaqueteDao paqueteDao;
 	
+	private Client client;
+	private WebTarget webTarget;
+	
 	@PostConstruct
 	public void init() {
 		reserva = new Reserva();
@@ -76,7 +81,7 @@ public class ReservaBean extends JAXRSClient {
 		paquetes = paqueteDao.findAll();
 		
 		client = ClientBuilder.newClient();
-		webTarget = client.target(WS_ENDPOINT);
+		webTarget = client.target("http://localhost:8080/fantur/resources");
 	}
 
 	// ALTA
@@ -91,7 +96,7 @@ public class ReservaBean extends JAXRSClient {
 	public void reservar(Paquete paquete) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		WebTarget organismoWebTarget = webTarget.path("/organismo");
-		invocationBuilder = organismoWebTarget.request(MediaType.APPLICATION_JSON);
+		Invocation.Builder invocationBuilder = organismoWebTarget.request(MediaType.APPLICATION_JSON);
 		int n = invocationBuilder.get(Integer.class);
 		if (n < 50) {
 			reserva.setFechaReserva(new Date());

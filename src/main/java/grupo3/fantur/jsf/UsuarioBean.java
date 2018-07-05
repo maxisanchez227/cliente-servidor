@@ -1,6 +1,5 @@
 package grupo3.fantur.jsf;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -9,7 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -56,9 +55,7 @@ public class UsuarioBean extends JAXRSClient {
 	public void init() {
 		usuario = new Usuario();
 		roles = rolDao.findAll();
-		client = ClientBuilder.newClient();
-		webTarget = client.target(WS_ENDPOINT);
-		usuarioWebTarget = webTarget.path("/usuario");
+		usuarioWebTarget = JAXRSClient.buildUsuarioClient();
 	}
 
 	// ALTA
@@ -105,7 +102,7 @@ public class UsuarioBean extends JAXRSClient {
 	 */
 	public List<Usuario> listaUsuarios() {
 		// return usuarioDao.findAll();
-		invocationBuilder = usuarioWebTarget.request(MediaType.APPLICATION_JSON);
+		Invocation.Builder invocationBuilder = usuarioWebTarget.request(MediaType.APPLICATION_JSON);
 		return invocationBuilder.get(new GenericType<List<Usuario>>() {});
 	}
 

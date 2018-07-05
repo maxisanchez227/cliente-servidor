@@ -32,18 +32,18 @@
 				<h:column/>
 				
 				<p:outputLabel for="asunto" value="Asunto:"/>
-				<p:inputText id="asunto" value="#{mensajeriaBean.asunto}" required="true" requiredMessage="Ingrese al menos un mail"/>
+				<p:inputText id="asunto" value="#{mensajeriaBean.asunto}"/>
 				<p:message for="asunto"/>
 				
 				<p:outputLabel for="mensaje" value="Mensaje"/>
-				<p:inputTextarea id="mensaje" value="#{mensajeriaBean.mensaje}" required="true" requiredMessage="Este campo no puede estar vacío"
+				<p:inputTextarea id="mensaje" value="#{mensajeriaBean.mensaje}" required="true" requiredMessage="El campo mensaje no puede estar vacío"
 								rows="5" cols="70" counter="display" maxlength="255" counterTemplate="Quedan {0} caracteres" autoResize="false"/>
 				<p:message for="mensaje"/>
 				<h:column/>
 				<h:outputText id="display" />
 				<h:column/>
 				
-				<p:commandButton id="btn" value="Enviar" actionListener="#{mensajeriaBean.enviarMsj()}"  update="frm"/>
+				<p:commandButton id="btn" value="Enviar" actionListener="#{mensajeriaBean.send()}"  update="frm"/>
 				
 			</h:panelGrid>
 		</p:fieldset>

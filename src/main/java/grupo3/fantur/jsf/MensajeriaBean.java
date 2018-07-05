@@ -2,23 +2,31 @@ package grupo3.fantur.jsf;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.MessageProducer;
+import javax.jms.Queue;
+import javax.jms.Session;
+import javax.jms.TextMessage;
 
 import grupo3.fantur.dao.UsuarioDao;
-import grupo3.fantur.mail.Mail;
 import grupo3.fantur.model.Usuario;
 
 @ManagedBean
 @ViewScoped
 public class MensajeriaBean {
 
-	private Mail mail;
 	private List<String> mails;
 	private String direcciones;
 	private String asunto;
@@ -26,36 +34,96 @@ public class MensajeriaBean {
 	private boolean todos;
 	private static List<Usuario> usuarios;
 
+	private static Logger logger = Logger.getLogger(MensajeriaBean.class.getSimpleName());
+
 	@Inject
 	UsuarioDao usuarioDao;
 
+	@Resource(mappedName = "java:/ConnectionFactory")
+	private ConnectionFactory connectionFactory;
+
+	@Resource(mappedName = "java:/jms/queue/FanturQueue")
+	private Queue queue;
+
 	@PostConstruct
 	public void init() {
-		mail = new Mail();
 		mails = new ArrayList<String>();
 		todos = false;
 		usuarios = usuarioDao.findAll();
 	}
-	
+
 	/*
-	 * Enviar mails
+	 * Enviar a la cola
 	 * 
 	 */
-	public void enviarMsj() {
-		if (todos) {
-			mails = todosEmails();
+	public void send() {
+
+		Connection connection = null;
+		Session session = null;
+		MessageProducer producer = null;
+
+		try {
+			// 1 - Create the Connection
+			connection = connectionFactory.createConnection();
+
+			// 2 - Create the Session
+			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+			// 3 - Create the producer
+			producer = session.createProducer(queue);
+
+			// 4 - Create the message
+			TextMessage textMessage = session.createTextMessage();
+
+			// 5 - Set the payload
+			textMessage.setText(mensaje);
+			if (todos) {
+				mails = todosEmails();
+			}
+			direcciones = "";
+			for (String d : mails) {
+				direcciones += d + ",";
+			}
+			textMessage.setStringProperty("direcciones", direcciones);
+			textMessage.setStringProperty("asunto", asunto);
+
+			// 6 - Send the message
+			producer.send(textMessage);
+
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensajes enviados", "Mensajes enviados con éxito "));
+
+		} catch (JMSException e) {
+
+			logger.log(Level.SEVERE, e.getMessage());
+
+		} finally {
+			// 7 - Clean up
+			if (producer != null) {
+				try {
+					producer.close();
+				} catch (JMSException e) {
+				}
+			}
+			if (session != null) {
+				try {
+					session.close();
+				} catch (JMSException e) {
+				}
+			}
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (JMSException e) {
+				}
+			}
 		}
-		direcciones = "";
-		for (String d : mails) {
-			direcciones += d + ",";
-		}
-		System.out.println(direcciones);
-		System.out.println(asunto);
-		System.out.println(mensaje);
-		mail.sendMsg(direcciones, asunto, mensaje);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensajes enviados", "Mensajes enviados con éxito "));
 	}
 
+	/*
+	 * Devuelve los mails de todos los usuarios
+	 * 
+	 */
 	public static List<String> todosEmails() {
 		List<String> mc = new ArrayList<String>();
 		for (Usuario u : usuarios) {

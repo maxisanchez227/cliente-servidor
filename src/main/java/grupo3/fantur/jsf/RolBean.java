@@ -5,8 +5,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -16,7 +16,7 @@ import grupo3.fantur.ws.JAXRSClient;
 
 @ManagedBean
 @ViewScoped
-public class RolBean extends JAXRSClient {
+public class RolBean {
 
 	private Rol rol;
 
@@ -29,16 +29,13 @@ public class RolBean extends JAXRSClient {
 	@PostConstruct
 	private void init() {
 		rol = new Rol();
-		
-		client = ClientBuilder.newClient();
-		webTarget = client.target(WS_ENDPOINT);
-		rolWebTarget = webTarget.path("/rol");
+		rolWebTarget = JAXRSClient.buildClientRolClient();
 	}
 
 	// ALTA
 	public void createRol() {
 		// rolDao.create(rol);
-		invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
+		Invocation.Builder invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
 		invocationBuilder.post(Entity.entity(rol, MediaType.APPLICATION_JSON));
 	}
 
@@ -47,14 +44,14 @@ public class RolBean extends JAXRSClient {
 		// rolDao.delete(rol);
 		String id = String.valueOf(rol.getId());
 		WebTarget deleteRolWebTarget = rolWebTarget.path(id);
-		invocationBuilder = deleteRolWebTarget.request(MediaType.APPLICATION_JSON);
+		Invocation.Builder invocationBuilder = deleteRolWebTarget.request(MediaType.APPLICATION_JSON);
 		invocationBuilder.delete();
 	}
 
 	// MODIFICACION
 	public void updateRol() {
 		// rolDao.update(rol);
-		invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
+		Invocation.Builder invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
 		invocationBuilder.put(Entity.entity(rol, MediaType.APPLICATION_JSON));
 	}
 
@@ -64,7 +61,7 @@ public class RolBean extends JAXRSClient {
 	 */
 	public List<Rol> listaRoles() {
 		// return rolDao.findAll();
-		invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
+		Invocation.Builder invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
 		return invocationBuilder.get(new GenericType<List<Rol>>() {});
 	}
 

@@ -79,9 +79,6 @@ public class ReservaBean {
 		reserva = new Reserva();
 		usuarios = usuarioDao.findAll();
 		paquetes = paqueteDao.findAll();
-		
-		client = ClientBuilder.newClient();
-		webTarget = client.target("http://localhost:8080/fantur/resources");
 	}
 
 	// ALTA
@@ -95,7 +92,9 @@ public class ReservaBean {
 
 	public void reservar(Paquete paquete) {
 		FacesContext context = FacesContext.getCurrentInstance();
-		WebTarget organismoWebTarget = webTarget.path("/organismo");
+		client = ClientBuilder.newClient();
+		webTarget = client.target("http://localhost:8080/organismo/resources");
+		WebTarget organismoWebTarget = webTarget.path("/confirmar-operacion");
 		Invocation.Builder invocationBuilder = organismoWebTarget.request(MediaType.APPLICATION_JSON);
 		int n = invocationBuilder.get(Integer.class);
 		if (n < 50) {

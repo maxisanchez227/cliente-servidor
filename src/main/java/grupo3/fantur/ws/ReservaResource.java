@@ -4,7 +4,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -33,6 +36,22 @@ public class ReservaResource {
 	public Response getReserva(@PathParam("reservaId") long id) {
 		Reserva reserva = reservaDao.findById(id);
 		return Response.ok(reserva).build();
+	}
+	
+	@POST
+	public void addReserva(Reserva reserva) {
+		reservaDao.create(reserva);
+	}
+
+	@PUT
+	public void updateReserva(Reserva reserva) {
+		reservaDao.update(reserva);
+	}
+
+	@DELETE
+	@Path("/{reservaId}")
+	public void deleteReserva(@PathParam("reservaId") long id) {
+		reservaDao.delete(reservaDao.findById(id));
 	}
 
 }

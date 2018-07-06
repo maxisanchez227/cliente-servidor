@@ -4,7 +4,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -33,6 +36,22 @@ public class UsuarioResource {
 	public Response getUsuario(@PathParam("usuarioId") long id) {
 		Usuario usuario = usuarioDao.findById(id);
 		return Response.ok(usuario).build();
+	}
+	
+	@POST
+	public void addUsuario(Usuario usuario) {
+		usuarioDao.create(usuario);
+	}
+
+	@PUT
+	public void updateUsuario(Usuario usuario) {
+		usuarioDao.update(usuario);
+	}
+
+	@DELETE
+	@Path("/{rolId}")
+	public void deleteUsuario(@PathParam("rolId") long id) {
+		usuarioDao.delete(usuarioDao.findById(id));
 	}
 
 }

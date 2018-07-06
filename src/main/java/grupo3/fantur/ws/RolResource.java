@@ -43,13 +43,6 @@ public class RolResource {
 		rolDao.create(rol);
 	}
 
-	// @PUT
-	// @Path("/{rolId}")
-	// public void updateRol(@PathParam("rolId") long id, Rol rol) {
-	// rol.setId(id);
-	// rolDao.update(rol);
-	// }
-
 	@PUT
 	public void updateRol(Rol rol) {
 		rolDao.update(rol);
@@ -60,5 +53,12 @@ public class RolResource {
 	public void deleteRol(@PathParam("rolId") long id) {
 		rolDao.delete(rolDao.findById(id));
 	}
+
+	// @PUT
+	// @Path("/{rolId}")
+	// public void updateRol(@PathParam("rolId") long id, Rol rol) {
+	// rol.setId(id);
+	// rolDao.update(rol);
+	// }
 
 }

@@ -22,8 +22,11 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "PAQUETE")
+@JsonIgnoreProperties({"fechaReserva","estado","usuario", "paquete"})
 public class Paquete {
 
 	@Id

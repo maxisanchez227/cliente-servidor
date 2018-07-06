@@ -19,10 +19,10 @@ import javax.ws.rs.core.MediaType;
 import grupo3.fantur.dao.PaqueteDao;
 import grupo3.fantur.dao.ReservaDao;
 import grupo3.fantur.dao.UsuarioDao;
+import grupo3.fantur.mail.Mail;
 import grupo3.fantur.model.Paquete;
 import grupo3.fantur.model.Reserva;
 import grupo3.fantur.model.Usuario;
-import grupo3.fantur.ws.JAXRSClient;
 
 @ManagedBean
 @ViewScoped
@@ -105,6 +105,12 @@ public class ReservaBean {
 			Usuario usuario = (Usuario) context.getExternalContext().getSessionMap().get("usuario");
 			reserva.setUsuario(usuario);
 			reservaDao.create(reserva);
+			
+			int cant = paquete.getCantidadDisponible();
+			cant--;
+			paquete.setCantidadDisponible(cant);
+			paqueteDao.update(paquete);
+			
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva realizada", "Reserva realizada con éxito " + n));
 			context.getExternalContext().getFlash().setKeepMessages(true);
 		} else {
@@ -116,6 +122,23 @@ public class ReservaBean {
 	// BAJA
 	public void deleteReserva(Reserva Reserva) {
 		reservaDao.delete(Reserva);
+	}
+	
+	public void cancelarReserva(Reserva r) {
+		Paquete paquete = r.getPaquete();
+		int cant = paquete.getCantidadDisponible();
+		cant++;
+		paquete.setCantidadDisponible(cant);
+		paqueteDao.update(paquete);
+		reservaDao.delete(r);
+		// notifiacion
+		Mail mail = new Mail();
+		Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+		String direcciones = usuario.getEmail();
+		String asunto = "Actialización Estado Reserva";
+		String mensaje = "Reserva cancelada";
+		mail.sendMsg(direcciones, asunto, mensaje);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva cancelada", "Reserva cancelada con éxito"));
 	}
 
 	// MODIFICACION

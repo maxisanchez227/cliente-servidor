@@ -5,10 +5,14 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.inject.Inject;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 
-import grupo3.fantur.dao.ActividadDao;
 import grupo3.fantur.model.Actividad;
+import grupo3.fantur.ws.JAXRSClient;
 
 @ManagedBean
 @ViewScoped
@@ -20,27 +24,32 @@ public class ActividadBean {
 		return actividad;
 	}
 
-	@Inject
-	ActividadDao actividadDao;
+	private WebTarget actividadWebTarget;
 
 	@PostConstruct
 	public void init() {
 		actividad = new Actividad();
+		actividadWebTarget = JAXRSClient.buildActividadClient();
 	}
 
 	// ALTA
 	public void createActividad() {
-		actividadDao.create(actividad);
+		Invocation.Builder invocationBuilder = actividadWebTarget.request(MediaType.APPLICATION_JSON);
+		invocationBuilder.post(Entity.entity(actividad, MediaType.APPLICATION_JSON));
 	}
 
 	// BAJA
 	public void deleteActividad(Actividad actividad) {
-		actividadDao.delete(actividad);
+		String id = String.valueOf(actividad.getId());
+		WebTarget deleteWebTarget = actividadWebTarget.path(id);
+		Invocation.Builder invocationBuilder = deleteWebTarget.request(MediaType.APPLICATION_JSON);
+		invocationBuilder.delete();
 	}
 
 	// MODIFICACION
 	public void updateActividad() {
-		actividadDao.update(actividad);
+		Invocation.Builder invocationBuilder = actividadWebTarget.request(MediaType.APPLICATION_JSON);
+		invocationBuilder.put(Entity.entity(actividad, MediaType.APPLICATION_JSON));
 	}
 
 	/*
@@ -48,7 +57,9 @@ public class ActividadBean {
 	 * 
 	 */
 	public List<Actividad> listaActividades() {
-		return actividadDao.findAll();
+		Invocation.Builder invocationBuilder = actividadWebTarget.request(MediaType.APPLICATION_JSON);
+		return invocationBuilder.get(new GenericType<List<Actividad>>() {
+		});
 	}
 
 	/*

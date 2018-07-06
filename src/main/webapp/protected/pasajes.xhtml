@@ -48,11 +48,15 @@
 			</p:column>
 			
 			<p:column headerText="Fec. Partida">
-				<h:outputText value="#{p.fechaPartida}" />
+				<h:outputText value="#{p.fechaPartida}">
+					<f:convertDateTime pattern="yyyy-MM-dd"/>
+				</h:outputText>
 			</p:column>
 			
 			<p:column headerText="Fec. Regreso">
-				<h:outputText value="#{p.fechaRegreso}" />
+				<h:outputText value="#{p.fechaRegreso}">
+					<f:convertDateTime pattern="yyyy-MM-dd"/>
+				</h:outputText>
 			</p:column>
 			
 			<p:column headerText="Precio">

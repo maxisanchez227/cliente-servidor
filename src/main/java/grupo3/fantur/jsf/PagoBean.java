@@ -1,9 +1,10 @@
 package grupo3.fantur.jsf;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -12,6 +13,7 @@ import javax.inject.Inject;
 import grupo3.fantur.dao.MedioDePagoDao;
 import grupo3.fantur.dao.PagoDao;
 import grupo3.fantur.dao.ReservaDao;
+import grupo3.fantur.mail.Mail;
 import grupo3.fantur.model.MedioDePago;
 import grupo3.fantur.model.Pago;
 import grupo3.fantur.model.Reserva;
@@ -79,6 +81,25 @@ public class PagoBean {
 		pago.setMedioDePago(medioDePago);
 		pagoDao.create(pago);
 	}
+	
+	public void pagarReserva(Reserva r) {
+		r.setEstado("Pagado");
+		reservaDao.update(r);
+		MedioDePago medioDePago = medioDepagoDao.findById(medioDePagoId);
+		pago.setReserva(r);
+		pago.setMedioDePago(medioDePago);
+		pago.setFechaPago(new Date());
+		pago.setImporte(r.getPaquete().getPrecio());
+		pagoDao.create(pago);
+		// notificacion
+		Mail mail = new Mail();
+		Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+		String direcciones = usuario.getEmail();
+		String asunto = "Actialización Estado Reserva";
+		String mensaje = "Reserva pagada";
+		mail.sendMsg(direcciones, asunto, mensaje);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Pago realizado", "Reserva pagada con éxito"));
+	}
 
 	// BAJA
 	public void deletePago(Pago pago) {
@@ -98,6 +119,34 @@ public class PagoBean {
 		return pagoDao.findAll();
 	}
 
+	/*
+	 * Devuelve fecha y medio de pago de las reservas pagadas
+	 * 
+	 */
+	public Date getFechaPago(Reserva r) {
+		Date fechaPago = null;
+		long reservaId = r.getId();
+		List<Pago> pagos = pagoDao.findAll();
+		for(Pago p: pagos) {
+			if(reservaId == p.getReserva().getId()) {
+				fechaPago = p.getFechaPago();
+			}
+		}
+		return fechaPago;
+	}
+	
+	public String getMedioDePago(Reserva r) {
+		String mdp = null;
+		long reservaId = r.getId();
+		List<Pago> pagos = pagoDao.findAll();
+		for(Pago p: pagos) {
+			if(reservaId == p.getReserva().getId()) {
+				mdp = p.getMedioDePago().getNombre();
+			}
+		}
+		return mdp;
+	}
+	
 	/*
 	 * Lee el pago actual para editarlo
 	 * 

@@ -8,20 +8,45 @@ public class JAXRSClient {
 
 	public static final String WS_ENDPOINT = "http://localhost:8080/fantur/resources";
 
-	private static WebTarget builtTarget() {
+	private static WebTarget buildTarget() {
 		Client client = ClientBuilder.newClient();
 		WebTarget target = client.target(WS_ENDPOINT);
 		return target;
 	}
 	
-	public static WebTarget buildClientRolClient() {
-		WebTarget target = builtTarget();
+	public static WebTarget buildRolClient() {
+		WebTarget target = buildTarget();
 		return target.path("/rol");
 		
 	}
 	
 	public static WebTarget buildUsuarioClient() {
-		WebTarget target = builtTarget();
+		WebTarget target = buildTarget();
 		return target.path("/usuario");
+	}
+	
+	public static WebTarget buildPasajeClient() {
+		WebTarget target = buildTarget();
+		return target.path("/pasaje");
+	}
+	
+	public static WebTarget buildHotelClient() {
+		WebTarget target = buildTarget();
+		return target.path("/hotel");
+	}
+	
+	public static WebTarget buildActividadClient() {
+		WebTarget target = buildTarget();
+		return target.path("/actividad");
+	}
+	
+	public static WebTarget buildPaqueteClient() {
+		WebTarget target = buildTarget();
+		return target.path("/reserva");
+	}
+	
+	public static WebTarget buildReservaClient() {
+		WebTarget target = buildTarget();
+		return target.path("/reserva");
 	}
 }

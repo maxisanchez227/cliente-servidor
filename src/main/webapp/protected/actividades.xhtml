@@ -44,7 +44,9 @@
 			</p:column>
 			
 			<p:column headerText="Fecha" width="90">
-				<h:outputText value="#{a.fechaActividad}" />
+				<h:outputText value="#{a.fechaActividad}">
+					<f:convertDateTime pattern="yyyy-MM-dd"/>
+				</h:outputText>
 			</p:column>
 			
 			<p:column headerText="Precio x Persona" width="140">

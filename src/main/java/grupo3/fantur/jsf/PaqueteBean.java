@@ -103,7 +103,7 @@ public class PaqueteBean {
 
 	@Inject
 	ActividadDao actividadDao;
-
+	
 	@PostConstruct
 	public void init() {
 		paquete = new Paquete();
@@ -118,6 +118,7 @@ public class PaqueteBean {
 		Hotel hotel = hotelDao.findById(hotelId);
 		paquete.setPasaje(pasaje);
 		paquete.setHotel(hotel);
+		
 		for (String actividadId : actividadesId) {
 			long id = Long.parseLong(actividadId);
 			Actividad actividad = actividadDao.findById(id);
@@ -136,6 +137,7 @@ public class PaqueteBean {
 		Pasaje pasaje = pasajeDao.findById(pasajeId);
 		Hotel hotel = hotelDao.findById(hotelId);
 		paquete.getActividades().clear();
+		
 		for (String actividadId : actividadesId) {
 			long id = Long.parseLong(actividadId);
 			Actividad actividad = actividadDao.findById(id);
@@ -150,8 +152,20 @@ public class PaqueteBean {
 	 * Devuelve la lista actual de paquetes
 	 * 
 	 */
-	public List<Paquete> listaPaquetes() {
+	public List<Paquete> listaPaquetes(){
 		return paqueteDao.findAll();
+	}
+	
+	public List<Paquete> disponibles() {
+		List<Paquete> paquetes = paqueteDao.findAll();
+		List<Paquete> disponibles = new ArrayList<Paquete>();
+		Date hoy = new Date();
+		for(Paquete p: paquetes) {
+			if(hoy.before(p.getPasaje().getFechaPartida()) && p.getCantidadDisponible()>0) {
+				disponibles.add(p);
+			}
+		}
+		return disponibles;
 	}
 
 	/*
@@ -162,6 +176,24 @@ public class PaqueteBean {
 		paquete = p;
 		pasajeId = p.getPasaje().getId();
 		hotelId = p.getHotel().getId();
+	}
+	
+	/*
+	 * Devuelve las actividades dentro del rango de fecha del pasaje
+	 * 
+	 */
+	public List<Actividad> actividadesDisponibles(){
+		List<Actividad> disponibles = new ArrayList<Actividad>();
+		Pasaje pasaje = pasajeDao.findById(pasajeId);
+		Date ida = pasaje.getFechaPartida();
+		Date vuelta = pasaje.getFechaRegreso();
+		for(Actividad a: actividades) {
+			Date diaAct = a.getFechaActividad();
+			if(diaAct.after(ida) && diaAct.before(vuelta)) {
+				disponibles.add(a);
+			}
+		}
+		return disponibles;
 	}
 
 	// OTROS METODOS
@@ -175,6 +207,7 @@ public class PaqueteBean {
 			Actividad actividad = actividadDao.findById(id);
 			subtotalActividades += actividad.getPrecioPorPersona();
 		}
+		
 		paquete.setPasaje(pasaje);
 		paquete.setHotel(hotel);
 

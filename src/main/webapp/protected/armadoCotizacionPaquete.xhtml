@@ -86,7 +86,7 @@
 						<p:outputLabel/>
 						<p:outputLabel/>
 						<p:selectManyCheckbox id="actividades" value="#{paqueteBean.actividadesId}" layout="grid" columns="3">
-							<f:selectItems value="#{paqueteBean.getActividades()}" var="act" itemValue="#{act.id}" itemLabel="#{act.nombre}" />
+							<f:selectItems value="#{paqueteBean.actividadesDisponibles()}" var="act" itemValue="#{act.id}" itemLabel="#{act.nombre}" />
 						</p:selectManyCheckbox>	
 						
 					</h:panelGrid>

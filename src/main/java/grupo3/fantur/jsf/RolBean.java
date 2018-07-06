@@ -29,28 +29,25 @@ public class RolBean {
 	@PostConstruct
 	private void init() {
 		rol = new Rol();
-		rolWebTarget = JAXRSClient.buildClientRolClient();
+		rolWebTarget = JAXRSClient.buildRolClient();
 	}
 
 	// ALTA
 	public void createRol() {
-		// rolDao.create(rol);
 		Invocation.Builder invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
 		invocationBuilder.post(Entity.entity(rol, MediaType.APPLICATION_JSON));
 	}
 
 	// BAJA
 	public void deleteRol(Rol rol) {
-		// rolDao.delete(rol);
 		String id = String.valueOf(rol.getId());
-		WebTarget deleteRolWebTarget = rolWebTarget.path(id);
-		Invocation.Builder invocationBuilder = deleteRolWebTarget.request(MediaType.APPLICATION_JSON);
+		WebTarget deleteWebTarget = rolWebTarget.path(id);
+		Invocation.Builder invocationBuilder = deleteWebTarget.request(MediaType.APPLICATION_JSON);
 		invocationBuilder.delete();
 	}
 
 	// MODIFICACION
 	public void updateRol() {
-		// rolDao.update(rol);
 		Invocation.Builder invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
 		invocationBuilder.put(Entity.entity(rol, MediaType.APPLICATION_JSON));
 	}
@@ -60,7 +57,6 @@ public class RolBean {
 	 * 
 	 */
 	public List<Rol> listaRoles() {
-		// return rolDao.findAll();
 		Invocation.Builder invocationBuilder = rolWebTarget.request(MediaType.APPLICATION_JSON);
 		return invocationBuilder.get(new GenericType<List<Rol>>() {});
 	}
